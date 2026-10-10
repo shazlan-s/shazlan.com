@@ -24,7 +24,7 @@ Add an entry to `items` in `content.json`:
 
 ## Automatic import
 
-`.github/workflows/import.yml` runs `scripts/import.mjs` once a day. It adds new posts from Instagram and Threads to `content.json`.
+`.github/workflows/import.yml` runs `scripts/import.mjs` every 3 hours. It adds new posts from Instagram and Threads to `content.json`.
 
 - Only posts made on or after `site.importSince` are added.
 - Anything already listed, including archived pieces, is never re-added.
