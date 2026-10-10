@@ -81,12 +81,14 @@ async function threads(token, since) {
     for (const t of page.data || []) {
       const date = (t.timestamp || '').slice(0, 10);
       if (date < since) return out;
-      if (DRY) console.log('  debug', JSON.stringify(t));
       if (!t.permalink || t.media_type === 'REPOST_FACADE') continue; // reposts of other people's posts don't carry their details
       const pictures = t.media_type && t.media_type !== 'TEXT_POST';
       if (!pictures && !t.text) continue;
       // A text post that links to something the site can show (Instagram, YouTube, Spotify)
       // becomes that piece, with the Threads words as the site caption.
+      // Threads doesn't always report the link (posts shared from the Instagram app don't), so the
+      // post's public embed page is checked for one as well.
+      if (!pictures && !t.link_attachment_url) t.link_attachment_url = await embedLink(t.permalink);
       const linked = !pictures && t.link_attachment_url ? await linkedPiece(t.link_attachment_url) : null;
       if (t.link_attachment_url) console.log(`  ${date} ${t.permalink} links to ${linked ? linked.platform + ' ' + linked.url : 'a web page (kept as a text card)'}`);
       if (linked) {
@@ -105,6 +107,19 @@ async function threads(token, since) {
     url = page.paging && page.paging.next;
   }
   return out;
+}
+
+// The first outside link on a Threads post's public embed page, if any.
+async function embedLink(permalink) {
+  try {
+    const r = await fetch(permalink.replace(/\/$/, '') + '/embed', { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    if (!r.ok) return null;
+    const html = (await r.text()).replace(/&amp;/g, '&');
+    const wrapped = html.match(/href="https:\/\/l\.facebook\.com\/l\.php\?u=([^"&]+)/);
+    if (wrapped) return decodeURIComponent(wrapped[1]);
+    const direct = html.match(/href="(https:\/\/(?:www\.)?(?:instagram\.com\/(?:p|reel|reels|tv)\/|youtube\.com\/|youtu\.be\/|open\.spotify\.com\/)[^"]+)"/);
+    return direct ? direct[1] : null;
+  } catch { return null; }
 }
 
 // Work out what a link attached to a Threads post points at. Returns null for anything the site
