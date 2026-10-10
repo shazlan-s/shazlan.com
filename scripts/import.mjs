@@ -81,6 +81,7 @@ async function threads(token, since) {
     for (const t of page.data || []) {
       const date = (t.timestamp || '').slice(0, 10);
       if (date < since) return out;
+      if (DRY) console.log('  debug', JSON.stringify(t));
       if (!t.permalink || t.media_type === 'REPOST_FACADE') continue; // reposts of other people's posts don't carry their details
       const pictures = t.media_type && t.media_type !== 'TEXT_POST';
       if (!pictures && !t.text) continue;
