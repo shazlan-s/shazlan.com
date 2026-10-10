@@ -123,8 +123,10 @@
     var who = '@' + (item.account || '').replace(/^@/, '');
     var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
     return el('div', { 'class': 'credit' }, [
-      el('span', { 'class': 'label', text: line }),
-      item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null,
+      el('div', { 'class': 'source' }, [
+        el('span', { 'class': 'label', text: line }),
+        item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
+      ]),
       item.note ? el('span', { 'class': 'note', text: item.note }) : null
     ]);
   }
@@ -184,9 +186,12 @@
       var sec = document.getElementById('now');
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : media(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
-        el('span', { 'class': 'label', text: 'Now · ' + fmtDate(now.date) }),
-        (now.caption || now.note) ? el('h2', { 'class': 'now-title', text: now.caption || now.note }) : null,
-        (now.caption && now.note) ? el('p', { 'class': 'now-note', text: now.note }) : null
+        el('span', { 'class': 'label', text: 'Now' }),
+        now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
+        el('div', { 'class': 'source' }, [
+          el('span', { 'class': 'label', text: '@' + (now.account || '').replace(/^@/, '') + ' · ' + fmtDate(now.date) }),
+          now.caption ? el('span', { 'class': 'orig', text: now.caption }) : null
+        ])
       ]));
       sec.hidden = false;
     }
