@@ -139,7 +139,8 @@
   var PLATFORM = { instagram: 'Instagram', youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music', threads: 'Threads' };
   function credit(item) {
     var social = item.platform === 'instagram' || item.platform === 'youtube' || item.platform === 'threads';
-    var who = social ? '@' + (item.account || '').replace(/^@/, '') : (item.account || '');
+    var acct = (item.account || '').replace(/^@/, '');
+    var who = social && acct && !/\s/.test(acct) ? '@' + acct : acct; // channel names with spaces get no @
     var parts = [item.source === 'shared' && social ? 'Shared from ' + who : who];
     if (PLATFORM[item.platform]) parts.push(PLATFORM[item.platform]);
     parts.push(fmtDate(item.date));

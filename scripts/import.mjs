@@ -7,6 +7,7 @@
 //  - Hashtags in a caption become tags, so search and tag links work straight away.
 //  - Instagram posts shared to Threads are not added twice (matched by their words).
 //  - Reposts of other people's Threads posts are skipped; add those by hand.
+//  - A Threads post linking to Instagram, YouTube or Spotify comes in as that piece, with your words as its caption.
 //
 // Options (environment variables, set from the "Run workflow" form):
 //  DRY_RUN=true   report what would be added without changing anything
@@ -72,7 +73,7 @@ async function threads(token, since) {
   try { await getJSON(`https://graph.threads.net/refresh_access_token?grant_type=th_refresh_token&access_token=${token}`); }
   catch (e) { console.log(`  token refresh skipped: ${e.message}`); }
 
-  const fields = 'id,text,media_type,permalink,timestamp,username,is_quote_post';
+  const fields = 'id,text,media_type,permalink,timestamp,username,is_quote_post,link_attachment_url';
   let url = `https://graph.threads.net/v1.0/me/threads?fields=${fields}&limit=50&access_token=${token}`;
   const out = [];
   while (url) {
@@ -83,6 +84,16 @@ async function threads(token, since) {
       if (!t.permalink || t.media_type === 'REPOST_FACADE') continue; // reposts of other people's posts don't carry their details
       const pictures = t.media_type && t.media_type !== 'TEXT_POST';
       if (!pictures && !t.text) continue;
+      // A text post that links to something the site can show (Instagram, YouTube, Spotify)
+      // becomes that piece, with the Threads words as the site caption.
+      const linked = !pictures && t.link_attachment_url ? await linkedPiece(t.link_attachment_url) : null;
+      if (linked) {
+        out.push(Object.assign(linked, {
+          source: ['shazlan', 'pic_shaz', 'shazlans', 'Shazlan Sufian'].includes(linked.account) ? 'mine' : 'shared',
+          date, note: (t.text || '').trim() || undefined, via: t.permalink, tags: hashtags(t.text)
+        }));
+        continue;
+      }
       out.push({
         kind: t.media_type === 'VIDEO' ? 'video' : pictures ? 'photo' : 'post',
         source: 'mine', platform: 'threads', account: t.username,
@@ -94,10 +105,43 @@ async function threads(token, since) {
   return out;
 }
 
+// Work out what a link attached to a Threads post points at. Returns null for anything the site
+// shows only as a plain link, so those posts stay as Threads text cards.
+async function linkedPiece(raw) {
+  let u;
+  try {
+    u = new URL(raw);
+    if (/(^|\.)facebook\.com$/.test(u.hostname) && u.searchParams.get('u')) u = new URL(u.searchParams.get('u'));
+  } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '');
+  const page = async (url) => { try { const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }); return r.ok ? await r.text() : ''; } catch { return ''; } };
+  const json = async (url) => { try { const r = await fetch(url); return r.ok ? await r.json() : {}; } catch { return {}; } };
+
+  let m = u.pathname.match(/^\/(p|reel|reels|tv)\/([\w-]+)/);
+  if (host === 'instagram.com' && m) {
+    const type = m[1] === 'p' ? 'p' : 'reel';
+    const html = await page(`https://www.instagram.com/p/${m[2]}/embed/captioned/`);
+    const who = (html.match(/class="UsernameText"[^>]*>([^<]+)/) || [])[1];
+    return { kind: type === 'reel' ? 'video' : 'photo', platform: 'instagram', account: who, url: `https://www.instagram.com/${type}/${m[2]}/` };
+  }
+  const yt = (raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
+  if (yt) {
+    const url = `https://www.youtube.com/watch?v=${yt}`;
+    const o = await json(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`);
+    return { kind: 'video', platform: 'youtube', account: o.author_name, url, caption: o.title };
+  }
+  if (host === 'open.spotify.com' && /^\/(track|album|playlist|episode|show)\//.test(u.pathname)) {
+    const url = `https://open.spotify.com${u.pathname}`;
+    const o = await json(`https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`);
+    return { kind: 'music', platform: 'spotify', url, caption: o.title, image: o.thumbnail_url };
+  }
+  return null;
+}
+
 const data = JSON.parse(await readFile(FILE, 'utf8'));
 const since = process.env.SINCE || data.site.importSince;
 if (!since) throw new Error('site.importSince is not set in content.json');
-const known = new Set(data.items.map((i) => key(i.url)));
+const known = new Set(data.items.flatMap((i) => [key(i.url), i.via && key(i.via)].filter(Boolean)));
 
 // Instagram posts shared to Threads: Threads copies the caption, so same words within 3 days means
 // it's already on the site. A Threads photo with no words is matched to a captionless Instagram post that day.
@@ -117,11 +161,11 @@ for (const a of ACCOUNTS) {
     const posts = a.platform === 'instagram' ? await instagram(token, since) : await threads(token, since);
     const pool = data.items.concat(added);
     const fresh = posts.filter((p) => {
-      if (known.has(key(p.url))) return false;
+      if (known.has(key(p.url)) || (p.via && known.has(key(p.via)))) return false;
       if (p.platform === 'threads' && fromInstagram(p, pool)) { console.log(`  skip ${p.date} ${p.url} (same words as an Instagram post)`); return false; }
       return true;
     });
-    fresh.forEach((p) => known.add(key(p.url)));
+    fresh.forEach((p) => { known.add(key(p.url)); if (p.via) known.add(key(p.via)); });
     console.log(`${a.secret}: ${posts.length} posts since ${since}, ${fresh.length} new`);
     fresh.forEach((p) => console.log(`  + ${p.date} ${p.platform} @${p.account} ${p.url}`));
     added = added.concat(fresh);

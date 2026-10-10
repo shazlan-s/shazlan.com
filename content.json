@@ -301,14 +301,17 @@
       ]
     },
     {
-      "kind": "post",
-      "source": "mine",
-      "platform": "threads",
-      "account": "shazlan",
-      "url": "https://www.threads.com/@shazlan/post/DeUpu_GEqrm",
+      "kind": "video",
+      "source": "shared",
+      "platform": "instagram",
+      "account": "jonisjusttooloud",
+      "url": "https://www.instagram.com/reel/DdRz0oOzpfS/",
       "date": "2026-10-10",
-      "text": "His music has that same feeling my teenage years had. Hard to put into words",
-      "tags": [],
+      "note": "His music has that same feeling my teenage years had. Hard to put into words",
+      "via": "https://www.threads.com/@shazlan/post/DeUpu_GEqrm",
+      "tags": [
+        "music"
+      ],
       "auto": true
     }
   ]
