@@ -93,7 +93,7 @@ async function threads(token, since) {
       if (t.link_attachment_url) console.log(`  ${date} ${t.permalink} links to ${linked ? linked.platform + ' ' + linked.url : 'a web page (kept as a text card)'}`);
       if (linked) {
         out.push(Object.assign(linked, {
-          source: ['shazlan', 'pic_shaz', 'shazlans', 'Shazlan Sufian'].includes(linked.account) ? 'mine' : 'shared',
+          source: ['shazlan', 'pic_shaz', 'shazlans', 'shazlan_s', 'Shazlan Sufian'].includes(linked.account) ? 'mine' : 'shared',
           date, note: (t.text || '').trim() || undefined, via: t.permalink, tags: hashtags(t.text)
         }));
         continue;
