@@ -293,7 +293,7 @@
         el('span', { 'class': 'label', text: 'Now' }),
         now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
         el('div', { 'class': 'source' }, [
-          el('span', { 'class': 'label', text: '@' + (now.account || '').replace(/^@/, '') + ' · ' + fmtDate(now.date) }),
+          el('span', { 'class': 'label', text: ['@' + (now.account || '').replace(/^@/, ''), PLATFORM[now.platform], fmtDate(now.date)].filter(Boolean).join(' · ') }),
           now.caption ? el('span', { 'class': 'orig', text: now.caption }) : null
         ]),
         tagList(now)
