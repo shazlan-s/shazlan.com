@@ -3,26 +3,234 @@
     "name": "Shazlan",
     "intro": "Things I've made, found and talked about.",
     "links": [
-      { "label": "Instagram", "url": "https://www.instagram.com/shazlan/" },
-      { "label": "YouTube", "url": "https://www.youtube.com/@shazlans" },
-      { "label": "Threads", "url": "https://www.threads.com/@shazlan" }
+      {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/shazlan/"
+      },
+      {
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@shazlans"
+      },
+      {
+        "label": "Threads",
+        "url": "https://www.threads.com/@shazlan"
+      }
     ]
   },
   "items": [
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/p/DKXDlqIpD9v/", "date": "2025-06-01", "now": true, "title": "And this is 50." },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/p/DFbs_buSNhx/", "date": "2025-01-29" },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/p/DCRMjvbJUW9/", "date": "2024-11-12" },
-    { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/CkklaN8pk89/", "date": "2022-11-05" },
-    { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/Ci6NeAAh6Na/", "date": "2022-09-24" },
-    { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/ChOi8XrJJSi/", "date": "2022-08-13" },
-    { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/CRLSmEbJdki/", "date": "2021-07-10" },
-    { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/CPz594BpTga/", "date": "2021-06-07", "large": true },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CE27VArJmMv/", "date": "2020-09-07" },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CE16dX0JmEc/", "date": "2020-09-07" },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CDveMmqpSLk/", "date": "2020-08-11", "large": true },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B_4_c1iJ096/", "date": "2020-05-07" },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B6wO4WdpVXf/", "date": "2020-01-01" },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B4FCkixpeTB/", "date": "2019-10-26", "large": true },
-    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B2FXwh5Jgj8/", "date": "2019-09-06" }
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/p/DKXDlqIpD9v/",
+      "date": "2025-06-01",
+      "now": true,
+      "title": "And this is 50.",
+      "tags": [
+        "milestone",
+        "birthday",
+        "50",
+        "family"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/p/DFbs_buSNhx/",
+      "date": "2025-01-29",
+      "tags": [
+        "travel",
+        "japan",
+        "kobe",
+        "family"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/p/DCRMjvbJUW9/",
+      "date": "2024-11-12",
+      "tags": [
+        "milestone",
+        "anniversary",
+        "family"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/CkklaN8pk89/",
+      "date": "2022-11-05",
+      "tags": [
+        "food",
+        "pizza",
+        "cooking",
+        "dough"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/Ci6NeAAh6Na/",
+      "date": "2022-09-24",
+      "tags": [
+        "travel",
+        "island",
+        "getaway",
+        "beach"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/ChOi8XrJJSi/",
+      "date": "2022-08-13",
+      "tags": [
+        "bjj",
+        "jiu-jitsu",
+        "training",
+        "triangle"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/CRLSmEbJdki/",
+      "date": "2021-07-10",
+      "tags": [
+        "food",
+        "biryani",
+        "mutton",
+        "malaysia"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/CPz594BpTga/",
+      "date": "2021-06-07",
+      "large": true,
+      "tags": [
+        "food",
+        "nasi kandar",
+        "malaysia"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/CE27VArJmMv/",
+      "date": "2020-09-07",
+      "tags": [
+        "photography",
+        "beach",
+        "sky",
+        "reflection"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/CE16dX0JmEc/",
+      "date": "2020-09-07",
+      "tags": [
+        "photography",
+        "beach",
+        "clouds",
+        "sky"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/CDveMmqpSLk/",
+      "date": "2020-08-11",
+      "large": true,
+      "tags": [
+        "photography",
+        "travel",
+        "redang",
+        "island",
+        "malaysia"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/B_4_c1iJ096/",
+      "date": "2020-05-07",
+      "tags": [
+        "photography",
+        "moon",
+        "night"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/B6wO4WdpVXf/",
+      "date": "2020-01-01",
+      "tags": [
+        "photography",
+        "fireworks",
+        "new year",
+        "night"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/B4FCkixpeTB/",
+      "date": "2019-10-26",
+      "large": true,
+      "tags": [
+        "photography",
+        "wildlife",
+        "cheetah",
+        "singapore",
+        "zoo"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "pic_shaz",
+      "url": "https://www.instagram.com/p/B2FXwh5Jgj8/",
+      "date": "2019-09-06",
+      "tags": [
+        "photography",
+        "wildlife",
+        "bird",
+        "gull"
+      ]
+    }
   ]
 }

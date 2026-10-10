@@ -22,7 +22,15 @@ a:hover { color: var(--muted); }
 .name { margin: 0; font-size: 72px; line-height: .95; font-weight: 500; letter-spacing: -.04em; }
 .intro { margin: 0; font-size: 18px; color: var(--muted); font-weight: 300; }
 
+.tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.search { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--faint); background: #fff; }
+.search:focus-within { border-color: var(--ink); color: var(--ink); }
+.search input { all: unset; width: 140px; font-family: var(--sans); font-size: 14px; color: var(--ink); }
+.search input::placeholder { color: var(--faint); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.empty { margin: 24px 0 0; font-size: 16px; color: var(--muted); }
+.empty[hidden] { display: none; }
 .pill { all: unset; cursor: pointer; flex-shrink: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: 999px; font-family: var(--sans); font-size: 14px; color: var(--ink); transition: background .2s, color .2s; }
 .pill .n { font-family: var(--mono); font-size: 12px; opacity: .6; }
 .pill:hover { background: #ececec; }
@@ -89,6 +97,9 @@ main { padding-top: 40px; }
   .intro { font-size: 16px; }
   .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; width: calc(100% + 32px); scrollbar-width: none; }
   .filters::-webkit-scrollbar { display: none; }
+  .tools { width: 100%; justify-content: flex-start; }
+  .search { width: 100%; }
+  .search input { width: 100%; }
   .grid { grid-template-columns: minmax(0, 1fr); }
   .card.big { grid-column: auto; }
   .now-title { font-size: 23px; }

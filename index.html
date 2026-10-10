@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/site.css?v=4">
+  <link rel="stylesheet" href="assets/site.css?v=5">
 </head>
 <body>
   <div class="wrap">
@@ -20,7 +20,14 @@
         <h1 class="name">Shazlan<span class="dot">.</span></h1>
         <p class="intro" id="intro"></p>
       </div>
-      <nav class="filters" id="filters" aria-label="Filter"></nav>
+      <div class="tools">
+        <nav class="filters" id="filters" aria-label="Filter"></nav>
+        <label class="search">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="sr">Search</span>
+          <input id="search" type="search" placeholder="Search" autocomplete="off">
+        </label>
+      </div>
     </header>
 
     <section class="now" id="now" aria-label="Now" hidden></section>
@@ -42,6 +49,6 @@
     <div class="lb-body" id="lb-body"></div>
   </div>
 
-  <script src="assets/site.js?v=4"></script>
+  <script src="assets/site.js?v=5"></script>
 </body>
 </html>

@@ -88,7 +88,7 @@
     var box = el('div', { 'class': 'mask' });
     if (item.ratio) box.style.setProperty('--r', item.ratio);
     box.appendChild(instagram(item));
-    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account });
+    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account + (item.tags ? ': ' + item.tags.join(', ') : '') });
     hit.addEventListener('click', function () { openOriginal(item, hit); });
     box.appendChild(hit);
     if (item.kind === 'video') box.classList.add('reel');
@@ -198,6 +198,7 @@
         ig ? trimmed(item) : media(item),
         ig ? credit(item) : (item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null)
       ]);
+      card.dataset.text = [item.title, item.note, item.account, item.kind].concat(item.tags || []).join(' ').toLowerCase();
       card.style.animationDelay = (n * 50) + 'ms';
       grid.appendChild(card);
       if (ro) ro.observe(card);
@@ -208,6 +209,20 @@
     var counts = { all: rest.length };
     rest.forEach(function (i) { counts[i.kind] = (counts[i.kind] || 0) + 1; });
     var choices = [['all', 'All']].concat(KINDS.filter(function (k) { return counts[k[0]]; }));
+    var state = { kind: 'all', q: '' };
+    var empty = el('p', { 'class': 'empty', hidden: '' });
+    grid.parentNode.appendChild(empty);
+    function apply() {
+      var words = state.q.toLowerCase().split(/\s+/).filter(Boolean), shown = 0;
+      grid.querySelectorAll('.card').forEach(function (c) {
+        var ok = (state.kind === 'all' || c.dataset.kind === state.kind) &&
+          words.every(function (w) { return c.dataset.text.indexOf(w) !== -1; });
+        c.hidden = !ok; if (ok) shown++;
+      });
+      document.getElementById('now').hidden = !now || state.kind !== 'all' || words.length > 0;
+      empty.hidden = shown > 0;
+      empty.textContent = shown ? '' : 'Nothing here matches \u201c' + state.q.trim() + '\u201d.';
+    }
     choices.forEach(function (k) {
       var b = el('button', { 'class': 'pill', type: 'button', 'aria-pressed': k[0] === 'all' ? 'true' : 'false' }, [
         document.createTextNode(k[1]), el('span', { 'class': 'n', text: String(counts[k[0]]) })
@@ -215,11 +230,13 @@
       b.addEventListener('click', function () {
         nav.querySelectorAll('.pill').forEach(function (p) { p.setAttribute('aria-pressed', 'false'); });
         b.setAttribute('aria-pressed', 'true');
-        grid.querySelectorAll('.card').forEach(function (c) { c.hidden = !(k[0] === 'all' || c.dataset.kind === k[0]); });
-        document.getElementById('now').hidden = !now || k[0] !== 'all';
+        state.kind = k[0]; apply();
       });
       nav.appendChild(b);
     });
+
+    var search = document.getElementById('search');
+    search.addEventListener('input', function () { state.q = search.value; apply(); });
 
     document.getElementById('lb-close').addEventListener('click', closeOriginal);
     document.getElementById('lb').addEventListener('click', function (e) { if (e.target.id === 'lb') closeOriginal(); });
