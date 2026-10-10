@@ -96,21 +96,25 @@
     if (item.kind === 'video') box.classList.add('reel');
     // Once Instagram sizes its iframe, work out the photo's shape from it (unless content.json gives a ratio).
     if (!item.ratio && window.ResizeObserver) {
+      // The shape is measured once, from the first proper size Instagram reports, then kept.
+      // (Instagram can report a wrong size after a tile is hidden and shown again by a filter.)
+      var r = 0;
       var watch = new ResizeObserver(function () {
         var f = box.querySelector('iframe.instagram-media');
         if (!f) return;
         var h = f.getBoundingClientRect().height, w = box.getBoundingClientRect().width;
-        var mediaH = h - IG_HEAD - IG_FOOT;
-        if (h > 200 && mediaH > 40 && w > 0) {
-          var r = w / mediaH;
-          box.style.setProperty('--r', r.toFixed(4));
-          // Reels are tall (9:16) inside a wider frame, which leaves black side bars. Zoom in to fill.
-          if (item.kind === 'video') {
-            box.style.setProperty('--s', Math.max(1, r / 0.5625).toFixed(3));
-            box.style.setProperty('--oy', (IG_HEAD + 1 + mediaH / 2) + 'px');
-          }
+        if (w <= 0) return;
+        if (!r) {
+          var mediaH = h - IG_HEAD - IG_FOOT;
+          if (h > 200 && mediaH > 40) { r = w / mediaH; box.style.setProperty('--r', r.toFixed(4)); }
+        }
+        // Reels are tall (9:16) inside a wider frame, which leaves black side bars. Zoom in to fill.
+        if (r && item.kind === 'video') {
+          box.style.setProperty('--s', Math.max(1, r / 0.5625).toFixed(3));
+          box.style.setProperty('--oy', (IG_HEAD + 1 + (w / r) / 2) + 'px');
         }
       });
+      watch.observe(box);
       new MutationObserver(function () {
         var f = box.querySelector('iframe.instagram-media');
         if (f && !f.__watched) { f.__watched = true; watch.observe(f); }
