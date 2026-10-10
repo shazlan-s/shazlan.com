@@ -163,7 +163,13 @@
       href = item.url;
     }
     return el('div', { 'class': 'source' }, [
-      el('a', { 'class': 'label', href: href, target: '_blank', rel: 'noopener', text: parts.filter(Boolean).join(' \u00b7 ') }),
+      (function () {
+        var a = el('a', { 'class': 'label', href: href, target: '_blank', rel: 'noopener' }, [document.createTextNode(parts.filter(Boolean).join(' \u00b7 '))]);
+        var arrow = el('span', { 'class': 'out', 'aria-hidden': 'true' });
+        arrow.innerHTML = '<svg width="10" height="10" viewBox="0 0 18 18"><path d="M5 13L13 5M6 5h7v7" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
+        a.appendChild(arrow);
+        return a;
+      })(),
       second ? el('span', { 'class': 'orig', text: second }) : null
     ]);
   }
