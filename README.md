@@ -29,7 +29,8 @@ Add an entry to `items` in `content.json`:
 - Only posts made on or after `site.importSince` are added.
 - Anything already listed, including archived pieces, is never re-added.
 - Hashtags in a caption become tags.
-- Threads posts with a photo or video are skipped, since those are Instagram posts shared over. Only Threads text posts come in.
+- Instagram posts shared to Threads are skipped (Threads copies the caption, so the words match). Your own Threads photos and videos come in as trimmed Threads cards.
+- Reposts of other people's Threads posts are skipped. Add those by hand as shared pieces.
 - Imported pieces carry `"auto": true`. Add a `note`, `size`, `pinned` or `archived` to them like any other piece.
 - Tokens live in repository secrets: `IG_TOKEN_SHAZLAN`, `IG_TOKEN_PIC_SHAZ`, `THREADS_TOKEN`.
 - To test, open Actions, choose "Import new posts", then "Run workflow". It defaults to a dry run that only reports what it would add.

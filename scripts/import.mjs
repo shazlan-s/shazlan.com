@@ -5,7 +5,8 @@
 //  - Only posts made on or after site.importSince are added (the curated set covers what came before).
 //  - A post already in content.json (including archived ones) is never added again.
 //  - Hashtags in a caption become tags, so search and tag links work straight away.
-//  - Instagram posts shared to Threads are not added twice: only Threads text posts come in.
+//  - Instagram posts shared to Threads are not added twice (matched by their words).
+//  - Reposts of other people's Threads posts are skipped; add those by hand.
 //
 // Options (environment variables, set from the "Run workflow" form):
 //  DRY_RUN=true   report what would be added without changing anything
@@ -79,13 +80,13 @@ async function threads(token, since) {
     for (const t of page.data || []) {
       const date = (t.timestamp || '').slice(0, 10);
       if (date < since) return out;
-      if (!t.permalink || !t.text) continue; // reposts and image-only threads are skipped
-      // Threads posts with a photo or video are almost always shared over from Instagram,
-      // which the site already has. Only text posts are taken from Threads.
-      if (t.media_type && t.media_type !== 'TEXT_POST') { console.log(`  skip ${date} ${t.permalink} (has a photo or video, likely from Instagram)`); continue; }
+      if (!t.permalink || t.media_type === 'REPOST_FACADE') continue; // reposts of other people's posts don't carry their details
+      const pictures = t.media_type && t.media_type !== 'TEXT_POST';
+      if (!pictures && !t.text) continue;
       out.push({
-        kind: 'post', source: 'mine', platform: 'threads', account: t.username,
-        url: t.permalink, date, text: t.text.trim(), tags: hashtags(t.text)
+        kind: t.media_type === 'VIDEO' ? 'video' : pictures ? 'photo' : 'post',
+        source: 'mine', platform: 'threads', account: t.username,
+        url: t.permalink, date, text: (t.text || '').trim() || undefined, tags: hashtags(t.text)
       });
     }
     url = page.paging && page.paging.next;
@@ -98,12 +99,13 @@ const since = process.env.SINCE || data.site.importSince;
 if (!since) throw new Error('site.importSince is not set in content.json');
 const known = new Set(data.items.map((i) => key(i.url)));
 
-// Backup check for Instagram posts shared to Threads: same words, posted within 3 days.
+// Instagram posts shared to Threads: Threads copies the caption, so same words within 3 days means
+// it's already on the site. A Threads photo with no words is matched to a captionless Instagram post that day.
 const words = (t) => (t || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const days = (a, b) => Math.abs(new Date(a) - new Date(b)) / 864e5;
 function fromInstagram(p, pool) {
   const w = words(p.text);
-  return w.length > 0 && pool.some((i) => i.platform === 'instagram' && i.caption && words(i.caption) === w && days(i.date, p.date) <= 3);
+  return pool.some((i) => i.platform === 'instagram' && days(i.date, p.date) <= (w ? 3 : 1) && words(i.caption) === w);
 }
 
 console.log(`Importing posts from ${since}${DRY ? ' (dry run)' : ''}`);

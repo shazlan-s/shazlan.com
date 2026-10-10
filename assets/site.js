@@ -228,6 +228,33 @@
     return a;
   }
 
+  // Threads photo or video post: Threads' own embed, trimmed to the words and pictures.
+  // Its header (name, Follow) and footer (date, buttons) are clipped. Opens on Threads on click.
+  var TH_HEAD = 62, TH_FOOT = 78; // Threads embed header and footer heights (px)
+  function threadsTile(item) {
+    var box = el('div', { 'class': 'tmask' });
+    box.appendChild(el('blockquote', {
+      'class': 'text-post-media', 'data-text-post-permalink': item.url, 'data-text-post-version': '0'
+    }, [el('a', { href: item.url, target: '_blank', rel: 'noopener', text: 'View on Threads' })]));
+    var hit = el('a', { 'class': 'hit', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open the original post on Threads' });
+    box.appendChild(hit);
+    if (window.ResizeObserver) {
+      // Measured once from the first proper size Threads reports, then kept (same reason as Instagram).
+      var h = 0;
+      var watch = new ResizeObserver(function () {
+        var f = box.querySelector('iframe');
+        if (!f || h) return;
+        var fh = f.getBoundingClientRect().height;
+        if (fh > TH_HEAD + TH_FOOT + 60) { h = fh - TH_HEAD - TH_FOOT; box.style.setProperty('--h', h + 'px'); }
+      });
+      new MutationObserver(function () {
+        var f = box.querySelector('iframe');
+        if (f && !f.__watched) { f.__watched = true; watch.observe(f); }
+      }).observe(box, { childList: true, subtree: true });
+    }
+    return box;
+  }
+
   // A text post (Threads, X): the words are the picture.
   function textTile(item) {
     var a = el('a', { 'class': 'tile text', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open the original post' }, [
@@ -257,6 +284,7 @@
     if (item.platform === 'youtube') return youtubeTile(item);
     if (item.platform === 'spotify') return spotifyTile(item);
     if (item.platform === 'apple') return appleTile(item);
+    if (item.platform === 'threads' && item.kind !== 'post') return threadsTile(item);
     if (item.kind === 'post') return textTile(item);
     return linkTile(item);
   }
@@ -288,6 +316,9 @@
         if (window.instgrm) window.instgrm.Embeds.process();
       });
     }
+    if (document.querySelector('blockquote.text-post-media')) {
+      loadScript('https://www.threads.com/embed.js', function () {});
+    }
   }
 
   // ---- Masonry ------------------------------------------------------------
@@ -317,7 +348,7 @@
     var now = items.filter(function (i) { return i.now; })[0];
     if (now) {
       var sec = document.getElementById('now');
-      sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : media(now)]));
+      sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : tile(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
         el('span', { 'class': 'label', text: 'Now' }),
         now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
