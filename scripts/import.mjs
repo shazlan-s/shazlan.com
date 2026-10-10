@@ -1,10 +1,11 @@
-// Daily import: adds new Instagram (and later Threads) posts to content.json.
+// Daily import: adds new Instagram and Threads posts to content.json.
 // Runs on GitHub Actions. Tokens come from repository secrets and are never printed.
 //
 // Rules:
 //  - Only posts made on or after site.importSince are added (the curated set covers what came before).
 //  - A post already in content.json (including archived ones) is never added again.
 //  - Hashtags in a caption become tags, so search and tag links work straight away.
+//  - Instagram posts shared to Threads are not added twice: only Threads text posts come in.
 //
 // Options (environment variables, set from the "Run workflow" form):
 //  DRY_RUN=true   report what would be added without changing anything
@@ -78,7 +79,10 @@ async function threads(token, since) {
     for (const t of page.data || []) {
       const date = (t.timestamp || '').slice(0, 10);
       if (date < since) return out;
-      if (!t.permalink || !t.text) continue; // reposts and image-only threads are skipped for now
+      if (!t.permalink || !t.text) continue; // reposts and image-only threads are skipped
+      // Threads posts with a photo or video are almost always shared over from Instagram,
+      // which the site already has. Only text posts are taken from Threads.
+      if (t.media_type && t.media_type !== 'TEXT_POST') { console.log(`  skip ${date} ${t.permalink} (has a photo or video, likely from Instagram)`); continue; }
       out.push({
         kind: 'post', source: 'mine', platform: 'threads', account: t.username,
         url: t.permalink, date, text: t.text.trim(), tags: hashtags(t.text)
@@ -94,6 +98,14 @@ const since = process.env.SINCE || data.site.importSince;
 if (!since) throw new Error('site.importSince is not set in content.json');
 const known = new Set(data.items.map((i) => key(i.url)));
 
+// Backup check for Instagram posts shared to Threads: same words, posted within 3 days.
+const words = (t) => (t || '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+const days = (a, b) => Math.abs(new Date(a) - new Date(b)) / 864e5;
+function fromInstagram(p, pool) {
+  const w = words(p.text);
+  return w.length > 0 && pool.some((i) => i.platform === 'instagram' && i.caption && words(i.caption) === w && days(i.date, p.date) <= 3);
+}
+
 console.log(`Importing posts from ${since}${DRY ? ' (dry run)' : ''}`);
 let added = [], failed = 0;
 for (const a of ACCOUNTS) {
@@ -101,7 +113,12 @@ for (const a of ACCOUNTS) {
   if (!token) { console.log(`${a.secret}: not set, skipping`); continue; }
   try {
     const posts = a.platform === 'instagram' ? await instagram(token, since) : await threads(token, since);
-    const fresh = posts.filter((p) => !known.has(key(p.url)));
+    const pool = data.items.concat(added);
+    const fresh = posts.filter((p) => {
+      if (known.has(key(p.url))) return false;
+      if (p.platform === 'threads' && fromInstagram(p, pool)) { console.log(`  skip ${p.date} ${p.url} (same words as an Instagram post)`); return false; }
+      return true;
+    });
     fresh.forEach((p) => known.add(key(p.url)));
     console.log(`${a.secret}: ${posts.length} posts since ${since}, ${fresh.length} new`);
     fresh.forEach((p) => console.log(`  + ${p.date} ${p.platform} @${p.account} ${p.url}`));
