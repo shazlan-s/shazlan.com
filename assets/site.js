@@ -36,13 +36,15 @@
     document.body.appendChild(s);
   }
 
-  function instagram(item) {
+  function instagram(item, withCaption) {
     var link = el('a', { href: item.url, target: '_blank', rel: 'noopener', text: 'View this post on Instagram' });
-    return el('blockquote', {
+    var attrs = {
       'class': 'instagram-media',
       'data-instgrm-permalink': item.url + '?utm_source=ig_embed',
       'data-instgrm-version': '14'
-    }, [link]);
+    };
+    if (withCaption) attrs['data-instgrm-captioned'] = '';
+    return el('blockquote', attrs, [link]);
   }
 
   function youtube(item) {
@@ -122,7 +124,8 @@
     var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
     return el('div', { 'class': 'credit' }, [
       el('span', { 'class': 'label', text: line }),
-      item.note ? el('span', { 'class': 'note', text: item.note }) : null
+      item.note ? el('span', { 'class': 'note', text: item.note }) : null,
+      item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
     ]);
   }
 
@@ -130,7 +133,7 @@
   function openOriginal(item, from) {
     var lb = document.getElementById('lb'), body = document.getElementById('lb-body');
     body.innerHTML = '';
-    body.appendChild(media(item));
+    body.appendChild(item.platform === 'instagram' ? instagram(item, true) : media(item));
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
     lastFocus = from;
@@ -182,8 +185,8 @@
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : media(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
         el('span', { 'class': 'label', text: 'Now · ' + fmtDate(now.date) }),
-        now.title ? el('h2', { 'class': 'now-title', text: now.title }) : null,
-        now.note ? el('p', { 'class': 'now-note', text: now.note }) : null
+        now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
+        now.caption ? el('p', { 'class': 'now-note', text: now.caption }) : null
       ]));
       sec.hidden = false;
     }
@@ -198,7 +201,7 @@
         ig ? trimmed(item) : media(item),
         ig ? credit(item) : (item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null)
       ]);
-      card.dataset.text = [item.title, item.note, item.account, item.kind].concat(item.tags || []).join(' ').toLowerCase();
+      card.dataset.text = [item.title, item.note, item.caption, item.account, item.kind].concat(item.tags || []).join(' ').toLowerCase();
       card.style.animationDelay = (n * 50) + 'ms';
       grid.appendChild(card);
       if (ro) ro.observe(card);
