@@ -35,6 +35,21 @@
       ]
     },
     {
+      "kind": "video",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/reel/DcYMPrZgWJg/",
+      "date": "2026-08-23",
+      "caption": "August rolls. Another month down this journey",
+      "pinned": true,
+      "tags": [
+        "bjj",
+        "jiu-jitsu",
+        "training"
+      ]
+    },
+    {
       "kind": "photo",
       "source": "mine",
       "platform": "instagram",
