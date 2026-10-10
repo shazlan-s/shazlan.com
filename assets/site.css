@@ -74,6 +74,23 @@ main { padding-top: 40px; }
 .credit .orig { font-size: 13px; line-height: 1.45; color: var(--faint); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 /* Source box: who posted it, when, and the original caption */
 .source { display: flex; flex-direction: column; gap: 4px; background: #efefef; border-radius: 6px; padding: 10px 12px; }
+/* Tiles for YouTube, Spotify, links and text posts */
+.tile { position: relative; display: block; overflow: hidden; border-radius: 6px; background: #e9e9e9; }
+.tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.tile:hover img { transform: scale(1.03); }
+.tile.wide { aspect-ratio: 16 / 9; }
+.tile.square { aspect-ratio: 1; }
+.tile.link { aspect-ratio: 1.91 / 1; }
+.tile iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.tile.player { aspect-ratio: auto; height: 352px; background: transparent; }
+.tile .hit { all: unset; cursor: pointer; position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: 14px; box-sizing: border-box; }
+.tile .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.playbtn, .tile .go { width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center; }
+.tile .go { position: absolute; right: 14px; bottom: 14px; }
+.tile.text { background: #fff; border: 1px solid var(--line); padding: 24px 22px; text-decoration: none; color: var(--ink); transition: background .2s; }
+.tile.text:hover { background: #f4f4f4; }
+.tile.text .words { font-size: 21px; line-height: 1.4; letter-spacing: -.01em; }
+
 /* Tags: click to see related pieces */
 .tags { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 2px; }
 .tag { all: unset; cursor: pointer; font-size: 13px; font-style: italic; color: var(--faint); min-height: 24px; display: inline-flex; align-items: center; }

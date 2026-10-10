@@ -136,18 +136,91 @@
     return row;
   }
 
+  var PLATFORM = { instagram: 'Instagram', youtube: 'YouTube', spotify: 'Spotify', threads: 'Threads' };
   function credit(item) {
-    var who = '@' + (item.account || '').replace(/^@/, '');
-    var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
+    var social = item.platform === 'instagram' || item.platform === 'youtube' || item.platform === 'threads';
+    var who = social ? '@' + (item.account || '').replace(/^@/, '') : (item.account || '');
+    var parts = [item.source === 'shared' && social ? 'Shared from ' + who : who];
+    if (PLATFORM[item.platform]) parts.push(PLATFORM[item.platform]);
+    parts.push(fmtDate(item.date));
     return el('div', { 'class': 'credit' }, [
       el('div', { 'class': 'source' }, [
-        el('span', { 'class': 'label', text: line }),
+        el('span', { 'class': 'label', text: parts.join(' · ') }),
         item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
       ]),
       item.note ? el('span', { 'class': 'note', text: item.note }) : null,
       tagList(item)
     ]);
   }
+
+  // ---- Tiles for other platforms ---------------------------------------
+  function playIcon() {
+    var p = el('span', { 'class': 'playbtn', 'aria-hidden': 'true' });
+    p.innerHTML = '<svg width="16" height="16" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z" fill="#111"/></svg>';
+    return p;
+  }
+
+  // YouTube: the video's thumbnail; it plays right here on click.
+  function youtubeTile(item) {
+    var id = (item.url.match(/(?:v=|youtu\.be\/|shorts\/)([\w-]{11})/) || [])[1];
+    var box = el('div', { 'class': 'tile wide' });
+    box.appendChild(el('img', { src: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg', alt: item.caption || 'YouTube video', loading: 'lazy' }));
+    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Play video' + (item.caption ? ': ' + item.caption : '') }, [playIcon()]);
+    hit.addEventListener('click', function () {
+      box.innerHTML = '';
+      box.appendChild(el('iframe', {
+        src: 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1',
+        title: item.caption || 'YouTube video', allowfullscreen: '',
+        allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen'
+      }));
+    });
+    box.appendChild(hit);
+    return box;
+  }
+
+  // Spotify: the album art; the player appears in its place on click.
+  function spotifyTile(item) {
+    var path = item.url.replace(/^https?:\/\/open\.spotify\.com\//, '').split('?')[0];
+    var box = el('div', { 'class': 'tile square' });
+    if (item.image) box.appendChild(el('img', { src: item.image, alt: item.caption || 'Album art', loading: 'lazy' }));
+    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Play ' + (item.caption || 'track') + ' on Spotify' }, [playIcon()]);
+    hit.addEventListener('click', function () {
+      box.className = 'tile player';
+      box.innerHTML = '';
+      box.appendChild(el('iframe', {
+        src: 'https://open.spotify.com/embed/' + path + '?autoplay=1', title: item.caption || 'Spotify',
+        allow: 'autoplay; encrypted-media; clipboard-write; fullscreen; picture-in-picture'
+      }));
+    });
+    box.appendChild(hit);
+    return box;
+  }
+
+  // A web link: its preview image; opens the page in a new tab.
+  function linkTile(item) {
+    var a = el('a', { 'class': 'tile link', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open ' + (item.caption || item.url) });
+    if (item.image) a.appendChild(el('img', { src: item.image, alt: '', loading: 'lazy' }));
+    var go = el('span', { 'class': 'go', 'aria-hidden': 'true' });
+    go.innerHTML = '<svg width="16" height="16" viewBox="0 0 18 18"><path d="M5 13L13 5M6 5h7v7" stroke="#111" stroke-width="1.6" fill="none"/></svg>';
+    a.appendChild(go);
+    return a;
+  }
+
+  // A text post (Threads, X): the words are the picture.
+  function textTile(item) {
+    return el('a', { 'class': 'tile text', href: item.url, target: '_blank', rel: 'noopener' }, [
+      el('span', { 'class': 'words', text: item.text || '' })
+    ]);
+  }
+
+  function tile(item) {
+    if (item.platform === 'instagram') return trimmed(item);
+    if (item.platform === 'youtube') return youtubeTile(item);
+    if (item.platform === 'spotify') return spotifyTile(item);
+    if (item.kind === 'post') return textTile(item);
+    return linkTile(item);
+  }
+
 
   var lastFocus = null;
   function openOriginal(item, from) {
@@ -220,12 +293,11 @@
     gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
     var rest = items.filter(function (i) { return !i.now; });
     rest.forEach(function (item, n) {
-      var ig = item.platform === 'instagram';
       var card = el('article', { 'class': 'card' + (item.large ? ' big' : ''), 'data-kind': item.kind }, [
-        ig ? trimmed(item) : media(item),
-        ig ? credit(item) : (item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null)
+        tile(item),
+        credit(item)
       ]);
-      card.dataset.text = [item.title, item.note, item.caption, item.account, item.kind].concat(item.tags || []).join(' ').toLowerCase();
+      card.dataset.text = [item.title, item.text, item.note, item.caption, item.account, item.platform, item.kind].concat(item.tags || []).join(' ').toLowerCase();
       card.style.animationDelay = (n * 50) + 'ms';
       grid.appendChild(card);
       if (ro) ro.observe(card);

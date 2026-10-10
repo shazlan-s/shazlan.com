@@ -254,6 +254,68 @@
         "bird",
         "gull"
       ]
+    },
+    {
+      "kind": "music",
+      "source": "shared",
+      "platform": "spotify",
+      "account": "Marconi Union",
+      "url": "https://open.spotify.com/track/6kkwzB6hXLIONkEk9JciA6",
+      "date": "2026-10-01",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273f399efa20097105e9db88560",
+      "caption": "Weightless",
+      "note": "On repeat for long drives home.",
+      "tags": [
+        "music",
+        "ambient",
+        "focus"
+      ]
+    },
+    {
+      "kind": "link",
+      "source": "shared",
+      "platform": "web",
+      "account": "en.wikipedia.org",
+      "url": "https://en.wikipedia.org/wiki/Padel",
+      "date": "2026-09-20",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Sanchez-Casal_Paddle_Tennis_Game.jpg/1280px-Sanchez-Casal_Paddle_Tennis_Game.jpg",
+      "caption": "Padel - Wikipedia",
+      "note": "A handy primer for anyone wondering why I keep disappearing to the court.",
+      "tags": [
+        "padel",
+        "sport"
+      ]
+    },
+    {
+      "kind": "post",
+      "source": "mine",
+      "platform": "threads",
+      "account": "shazlan",
+      "url": "https://www.threads.com/@shazlan/post/C-aEq2SpTzP",
+      "date": "2024-08-08",
+      "text": "Back on the mats after 8 weeks post-op #onestepatatime #roadto50",
+      "note": "Slow comebacks still count.",
+      "tags": [
+        "bjj",
+        "training",
+        "comeback"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "youtube",
+      "account": "shazlans",
+      "url": "https://www.youtube.com/watch?v=Q5_fGi8r50I",
+      "date": "2013-03-21",
+      "large": true,
+      "caption": "At my favorite new sushi place - Hinata. Sushi Chef Yosa at work.",
+      "note": "Watching a sushi chef work never gets old.",
+      "tags": [
+        "food",
+        "sushi",
+        "japanese"
+      ]
     }
   ]
 }
