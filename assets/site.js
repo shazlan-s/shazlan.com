@@ -309,15 +309,33 @@
     var grid = document.getElementById('grid');
     gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
     var rest = items.filter(function (i) { return !i.now; });
-    rest.forEach(function (item, n) {
+
+    function makeCard(item, n, inPins) {
       // Size: "small" (1 column), "medium" (2) or "large" (3, the full row). "large": true is the old way of saying medium.
-      var size = item.size || (item.large ? 'medium' : 'small');
+      // Pinned pieces always sit one column wide in the pinned row.
+      var size = inPins ? 'small' : (item.size || (item.large ? 'medium' : 'small'));
       var card = el('article', { 'class': 'card' + (size === 'medium' ? ' big' : size === 'large' ? ' full' : ''), 'data-kind': item.kind }, [
         tile(item),
         credit(item)
       ]);
       card.dataset.text = [item.title, item.text, item.note, item.caption, item.account, item.platform, item.kind].concat(item.tags || []).join(' ').toLowerCase();
       card.style.animationDelay = (n * 50) + 'ms';
+      return card;
+    }
+
+    // Pinned: up to three pieces held under Now, whatever arrives later.
+    var pinned = rest.filter(function (i) { return i.pinned; }).slice(0, 3);
+    var pinSec = document.getElementById('pinned');
+    if (pinned.length) {
+      var row = pinSec.querySelector('.pins');
+      pinned.forEach(function (item, n) { row.appendChild(makeCard(item, n, true)); });
+      pinSec.hidden = false;
+    }
+
+    rest.forEach(function (item, n) {
+      var card = makeCard(item, n, false);
+      // A pinned piece also lives in the grid, but only shows there when someone filters or searches.
+      if (pinned.indexOf(item) !== -1) card.dataset.pinned = '1';
       grid.appendChild(card);
       if (ro) ro.observe(card);
     });
@@ -332,12 +350,15 @@
     grid.parentNode.appendChild(empty);
     function apply() {
       var words = state.q.toLowerCase().split(/\s+/).filter(Boolean), shown = 0;
+      var browsing = state.kind === 'all' && !words.length;
       grid.querySelectorAll('.card').forEach(function (c) {
         var ok = (state.kind === 'all' || c.dataset.kind === state.kind) &&
-          words.every(function (w) { return c.dataset.text.indexOf(w) !== -1; });
+          words.every(function (w) { return c.dataset.text.indexOf(w) !== -1; }) &&
+          !(browsing && c.dataset.pinned);
         c.hidden = !ok; if (ok) shown++;
       });
-      document.getElementById('now').hidden = !now || state.kind !== 'all' || words.length > 0;
+      document.getElementById('now').hidden = !now || !browsing;
+      document.getElementById('pinned').hidden = !pinned.length || !browsing;
       empty.hidden = shown > 0;
       empty.textContent = shown ? '' : 'Nothing here matches \u201c' + state.q.trim() + '\u201d.';
     }
@@ -353,6 +374,7 @@
       nav.appendChild(b);
     });
 
+    apply();
     var search = document.getElementById('search');
     search.addEventListener('input', function () { state.q = search.value; apply(); });
     onTag = function (t) {

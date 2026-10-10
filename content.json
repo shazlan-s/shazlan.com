@@ -191,7 +191,8 @@
         "island",
         "malaysia"
       ],
-      "size": "medium"
+      "size": "medium",
+      "pinned": true
     },
     {
       "kind": "photo",
@@ -269,7 +270,8 @@
         "music",
         "ambient",
         "focus"
-      ]
+      ],
+      "pinned": true
     },
     {
       "kind": "link",
@@ -332,7 +334,8 @@
         "jiu-jitsu",
         "reading"
       ],
-      "size": "medium"
+      "size": "medium",
+      "pinned": true
     },
     {
       "kind": "video",
