@@ -316,6 +316,23 @@
         "sushi",
         "japanese"
       ]
+    },
+    {
+      "kind": "quote",
+      "source": "shared",
+      "platform": "web",
+      "account": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu",
+      "date": "2026-10-05",
+      "large": true,
+      "text": "It is primarily a ground-based fighting style.",
+      "caption": "Brazilian jiu-jitsu",
+      "note": "The shortest possible explanation of why my knees hurt.",
+      "tags": [
+        "bjj",
+        "jiu-jitsu",
+        "reading"
+      ]
     }
   ]
 }

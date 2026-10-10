@@ -16,7 +16,7 @@ Add an entry to `items` in `content.json`:
 { "kind": "photo", "source": "mine", "platform": "instagram", "url": "https://www.instagram.com/p/XXXX/", "date": "2026-10-10" }
 ```
 
-- `kind`: `photo`, `video`, `post`, `music`, `link` or `comment`
+- `kind`: `photo`, `video`, `post`, `music`, `quote`, `link` or `comment` (a `quote` or `post` puts its words in `"text"`)
 - `source`: `mine` or `shared`
 - `platform`: `instagram`, `youtube`, `spotify`, or anything else for a plain link card
 - `date`: `YYYY-MM-DD`, used for ordering (newest first)

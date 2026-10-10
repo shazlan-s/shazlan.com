@@ -4,7 +4,7 @@
 (function () {
   var KINDS = [
     ['video', 'Videos'], ['photo', 'Photos'], ['post', 'Posts'],
-    ['music', 'Music'], ['link', 'Links'], ['comment', 'Comments']
+    ['music', 'Music'], ['quote', 'Quotes'], ['link', 'Links'], ['comment', 'Comments']
   ];
   var ROW = 4; // must match grid-auto-rows in site.css
 
@@ -213,7 +213,20 @@
     ]);
   }
 
+  // A quote from an article or blog post: the line itself, set large on a dark card.
+  function quoteTile(item) {
+    var a = el('a', { 'class': 'tile quote', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Read the full piece: ' + (item.caption || item.url) }, [
+      el('span', { 'class': 'mark', 'aria-hidden': 'true', text: '\u201c' }),
+      el('blockquote', { 'class': 'words', text: item.text || '' })
+    ]);
+    var go = el('span', { 'class': 'go', 'aria-hidden': 'true' });
+    go.innerHTML = '<svg width="16" height="16" viewBox="0 0 18 18"><path d="M5 13L13 5M6 5h7v7" stroke="#111" stroke-width="1.6" fill="none"/></svg>';
+    a.appendChild(go);
+    return a;
+  }
+
   function tile(item) {
+    if (item.kind === 'quote') return quoteTile(item);
     if (item.platform === 'instagram') return trimmed(item);
     if (item.platform === 'youtube') return youtubeTile(item);
     if (item.platform === 'spotify') return spotifyTile(item);
