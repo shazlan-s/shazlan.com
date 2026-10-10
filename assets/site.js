@@ -137,18 +137,39 @@
   }
 
   var PLATFORM = { instagram: 'Instagram', youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music', threads: 'Threads' };
-  function credit(item) {
+  // The grey box: who posted it, where and when (linking to the original post), then the original caption.
+  // A post that shares something (a Threads post linking to a reel, say) is credited to the post,
+  // with a line naming what it shares; the picture itself opens the shared piece.
+  var THING = { video: 'video', photo: 'post', music: 'track', link: 'link' };
+  function handle(name, social) {
+    var acct = (name || '').replace(/^@/, '');
+    return social && acct && !/\s/.test(acct) ? '@' + acct : acct; // channel names with spaces get no @
+  }
+  function sourceBox(item) {
     var social = item.platform === 'instagram' || item.platform === 'youtube' || item.platform === 'threads';
-    var acct = (item.account || '').replace(/^@/, '');
-    var who = social && acct && !/\s/.test(acct) ? '@' + acct : acct; // channel names with spaces get no @
-    var parts = [item.source === 'shared' && social ? 'Shared from ' + who : who];
-    if (PLATFORM[item.platform]) parts.push(PLATFORM[item.platform]);
-    parts.push(fmtDate(item.date));
+    var parts, href, second = item.caption;
+    if (item.via) {
+      var by = (item.via.match(/threads\.(?:com|net)\/@([\w.]+)/) || [])[1];
+      parts = [handle(by, true), 'Threads', fmtDate(item.date)];
+      href = item.via;
+      var thing = item.platform === 'instagram' && item.kind === 'video' ? 'reel' : (THING[item.kind] || 'post');
+      var owner = handle(item.account, social);
+      second = 'Sharing a ' + thing + (owner ? ' by ' + owner : '') + (item.caption ? ': ' + item.caption : '');
+    } else {
+      var who = handle(item.account, social);
+      parts = [item.source === 'shared' && social ? 'Shared from ' + who : who];
+      if (PLATFORM[item.platform]) parts.push(PLATFORM[item.platform]);
+      parts.push(fmtDate(item.date));
+      href = item.url;
+    }
+    return el('div', { 'class': 'source' }, [
+      el('a', { 'class': 'label', href: href, target: '_blank', rel: 'noopener', text: parts.filter(Boolean).join(' \u00b7 ') }),
+      second ? el('span', { 'class': 'orig', text: second }) : null
+    ]);
+  }
+  function credit(item) {
     return el('div', { 'class': 'credit' }, [
-      el('div', { 'class': 'source' }, [
-        el('span', { 'class': 'label', text: parts.join(' · ') }),
-        item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
-      ]),
+      sourceBox(item),
       item.note ? el('span', { 'class': 'note', text: item.note }) : null,
       tagList(item)
     ]);
@@ -353,10 +374,7 @@
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : tile(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
         now.note ? el('h3', { 'class': 'now-title', text: now.note }) : null,
-        el('div', { 'class': 'source' }, [
-          el('span', { 'class': 'label', text: ['@' + (now.account || '').replace(/^@/, ''), PLATFORM[now.platform], fmtDate(now.date)].filter(Boolean).join(' · ') }),
-          now.caption ? el('span', { 'class': 'orig', text: now.caption }) : null
-        ]),
+        sourceBox(now),
         tagList(now)
       ]));
       sec.hidden = false;
