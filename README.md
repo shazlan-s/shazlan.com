@@ -21,3 +21,14 @@ Add an entry to `items` in `content.json`:
 - `platform`: `instagram`, `youtube`, `spotify`, or anything else for a plain link card
 - `date`: `YYYY-MM-DD`, used for ordering (newest first)
 - Optional: `"note"` (your own site caption, shown under the card), `"caption"` (the original post's caption, shown smaller underneath), `"title"`, `"tags"` (a list of keywords for search, e.g. `["food", "japan"]`), `"size"`: `"small"` (1 column, the default), `"medium"` (2 columns) or `"large"` (3 columns, the full row), `"now": true` (shown at the top; keep only one), `"pinned": true` (held in the "On my mind lately" row under Now; up to three), `"archived": true` (hidden from the site but kept on record; remove it to bring the piece back)
+
+## Automatic import
+
+`.github/workflows/import.yml` runs `scripts/import.mjs` once a day. It adds new posts from Instagram (and Threads, once `THREADS_TOKEN` is set) to `content.json`.
+
+- Only posts made on or after `site.importSince` are added.
+- Anything already listed, including archived pieces, is never re-added.
+- Hashtags in a caption become tags.
+- Imported pieces carry `"auto": true`. Add a `note`, `size`, `pinned` or `archived` to them like any other piece.
+- Tokens live in repository secrets: `IG_TOKEN_SHAZLAN`, `IG_TOKEN_PIC_SHAZ`, `THREADS_TOKEN`.
+- To test, open Actions, choose "Import new posts", then "Run workflow". It defaults to a dry run that only reports what it would add.
