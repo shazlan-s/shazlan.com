@@ -131,16 +131,6 @@ main { padding-top: 56px; }
 .credit .note { font-size: 16px; line-height: 1.45; color: var(--ink); padding: 4px 2px 0; }
 .now-media .mask { border-radius: 6px; }
 
-/* Full-screen view: the full Instagram post */
-.lb { position: fixed; inset: 0; z-index: 50; background: rgba(8,8,8,.95); display: flex; align-items: center; justify-content: center; padding: 64px 24px 32px; overflow-y: auto; animation: fade .25s ease both; }
-.lb[hidden] { display: none; }
-.lb-body { width: 100%; max-width: 540px; margin: auto; }
-.lb-close { all: unset; cursor: pointer; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 999px; }
-.lb-close:hover { background: #222; }
-.lb-close:focus-visible { outline: 2px solid #fff; }
-.lb .instagram-media { margin: 0 auto !important; }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-
 /* Footer */
 .foot { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--muted); }
 .links { display: flex; gap: 24px; }
@@ -166,7 +156,6 @@ main { padding-top: 56px; }
   .card.big, .card.full { grid-column: auto; }
   .now-title { font-size: 23px; }
   .section-title { font-size: 28px; }
-  .lb { padding: 64px 12px 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

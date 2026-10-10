@@ -84,14 +84,14 @@
     return linkCard(item);
   }
 
-  // Trimmed Instagram embed: only the photo/video frame shows; the full post opens on click.
+  // Trimmed Instagram embed: only the photo/video frame shows; the post opens on Instagram on click.
   var IG_HEAD = 54, IG_FOOT = 154; // Instagram embed header and footer heights (px)
   function trimmed(item) {
     var box = el('div', { 'class': 'mask' });
     if (item.ratio) box.style.setProperty('--r', item.ratio);
     box.appendChild(instagram(item));
-    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account + (item.tags ? ': ' + item.tags.join(', ') : '') });
-    hit.addEventListener('click', function () { openOriginal(item, hit); });
+    // Clicking opens the post on Instagram itself (the Instagram app on phones), where videos always play.
+    var hit = el('a', { 'class': 'hit', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account + ' on Instagram' + (item.tags ? ': ' + item.tags.join(', ') : '') });
     box.appendChild(hit);
     if (item.kind === 'video') box.classList.add('reel');
     // Once Instagram sizes its iframe, work out the photo's shape from it (unless content.json gives a ratio).
@@ -312,26 +312,6 @@
   }
 
 
-  var lastFocus = null;
-  function openOriginal(item, from) {
-    var lb = document.getElementById('lb'), body = document.getElementById('lb-body');
-    body.innerHTML = '';
-    body.appendChild(item.platform === 'instagram' ? instagram(item, true) : media(item));
-    lb.hidden = false;
-    document.body.style.overflow = 'hidden';
-    lastFocus = from;
-    document.getElementById('lb-close').focus();
-    processEmbeds();
-  }
-  function closeOriginal() {
-    var lb = document.getElementById('lb');
-    if (lb.hidden) return;
-    lb.hidden = true;
-    document.getElementById('lb-body').innerHTML = '';
-    document.body.style.overflow = '';
-    if (lastFocus) lastFocus.focus();
-  }
-
   function processEmbeds() {
     if (document.querySelector('blockquote.instagram-media')) {
       loadScript('https://www.instagram.com/embed.js', function () {
@@ -458,9 +438,6 @@
       document.querySelector('.top').scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    document.getElementById('lb-close').addEventListener('click', closeOriginal);
-    document.getElementById('lb').addEventListener('click', function (e) { if (e.target.id === 'lb') closeOriginal(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeOriginal(); });
 
     window.addEventListener('resize', function () {
       gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
