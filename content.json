@@ -39,6 +39,21 @@
       "source": "mine",
       "platform": "instagram",
       "account": "shazlan",
+      "url": "https://www.instagram.com/p/CpDAovPp4KD/",
+      "date": "2023-02-24",
+      "caption": "That’s it for us. Last day here",
+      "pinned": true,
+      "tags": [
+        "japow",
+        "snow",
+        "family"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
       "url": "https://www.instagram.com/p/DKXDlqIpD9v/",
       "date": "2025-06-01",
       "caption": "And this is 50! No better way to spend it ❤️",
@@ -195,8 +210,7 @@
         "island",
         "malaysia"
       ],
-      "size": "medium",
-      "pinned": true
+      "size": "medium"
     },
     {
       "kind": "photo",
