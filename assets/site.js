@@ -281,7 +281,9 @@
   // ---- Page ---------------------------------------------------------------
 
   function render(data) {
-    var site = data.site, items = data.items.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    // Archived pieces stay in content.json (so the daily import knows not to re-add them) but never show.
+    var site = data.site, items = data.items.filter(function (i) { return !i.archived; })
+      .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
 
     document.getElementById('intro').textContent = site.intro;
     document.getElementById('copy').textContent = '© ' + new Date().getFullYear() + ' ' + site.name;
