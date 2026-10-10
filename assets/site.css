@@ -1,0 +1,76 @@
+:root {
+  --bg: #fafafa;
+  --ink: #111;
+  --muted: #5a5a5a;
+  --faint: #6b6b6b;
+  --line: #e2e2e2;
+  --gap: 22px;
+  --sans: 'Geist', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--ink); }
+a:hover { color: var(--muted); }
+
+.wrap { max-width: 1360px; margin: 0 auto; padding: 72px 32px 48px; }
+
+/* Header */
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+.who { display: flex; flex-direction: column; gap: 14px; }
+.name { margin: 0; font-size: 72px; line-height: .95; font-weight: 500; letter-spacing: -.04em; }
+.intro { margin: 0; font-size: 18px; color: var(--muted); font-weight: 300; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { all: unset; cursor: pointer; flex-shrink: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: 999px; font-family: var(--sans); font-size: 14px; color: var(--ink); transition: background .2s, color .2s; }
+.pill .n { font-family: var(--mono); font-size: 12px; opacity: .6; }
+.pill:hover { background: #ececec; }
+.pill[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.pill:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* Now */
+.now { padding-top: 40px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; }
+.now[hidden] { display: none; }
+.now-media { flex: 0 1 540px; min-width: 0; }
+.now-text { flex: 1 1 280px; display: flex; flex-direction: column; gap: 14px; }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.now-title { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 500; letter-spacing: -.02em; }
+.now-note { margin: 0; font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+/* Grid: a masonry built on CSS grid. Each card's row span is measured in site.js. */
+main { padding-top: 40px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(326px, 1fr)); grid-auto-rows: 4px; column-gap: var(--gap); grid-auto-flow: dense; align-items: start; }
+.card { min-width: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+.card[hidden] { display: none; }
+.card.big { grid-column: span 2; }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+.meta { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; }
+.meta .note { font-size: 14px; line-height: 1.45; color: var(--muted); }
+
+/* Instagram embeds: let them fill their column and drop Instagram's own outer margin */
+.card .instagram-media, .now .instagram-media { margin: 0 !important; min-width: 0 !important; max-width: 100% !important; width: 100% !important; }
+.card iframe.instagram-media, .now iframe.instagram-media { border-radius: 6px !important; }
+.card.big .instagram-media { max-width: 100% !important; }
+
+/* Footer */
+.foot { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--muted); }
+.links { display: flex; gap: 24px; }
+.links a { text-decoration: none; }
+
+/* Phone */
+@media (max-width: 720px) {
+  .wrap { padding: 36px 16px 32px; }
+  .name { font-size: 52px; }
+  .intro { font-size: 16px; }
+  .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; width: calc(100% + 32px); scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .card.big { grid-column: auto; }
+  .now-title { font-size: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+}
