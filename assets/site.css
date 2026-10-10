@@ -54,19 +54,20 @@ main { padding-top: 40px; }
 .card iframe.instagram-media, .now iframe.instagram-media { border-radius: 6px !important; }
 .card.big .instagram-media { max-width: 100% !important; }
 
-/* Shared card: other people's posts, shown in the site's own style */
-.shared { all: unset; cursor: pointer; box-sizing: border-box; width: 100%; display: flex; flex-direction: column; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: 6px; background: #fff; transition: background .2s; }
-.shared:hover { background: #f4f4f4; }
-.shared:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
-.shared .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.shared .who2 { display: flex; gap: 12px; align-items: center; min-width: 0; }
-.shared .avatar { width: 36px; height: 36px; border-radius: 999px; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 13px; flex-shrink: 0; }
-.shared .acct { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.shared .handle { font-size: 15px; font-weight: 500; }
-.shared .desc { font-size: 13px; color: var(--faint); }
-.shared .say { font-size: 20px; line-height: 1.4; letter-spacing: -.01em; }
+/* Trimmed embed: shows only the photo or video frame from an Instagram embed.
+   Instagram's header (54px) sits above the frame and its footer below; both are clipped. */
+.mask { position: relative; overflow: hidden; border-radius: 6px; background: #e9e9e9; aspect-ratio: var(--r, 1); }
+.mask blockquote.instagram-media { visibility: hidden; }
+.mask iframe.instagram-media { position: absolute !important; top: -55px !important; left: -1px !important; width: calc(100% + 2px) !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; pointer-events: none; }
+.mask .hit { all: unset; cursor: pointer; position: absolute; inset: 0; z-index: 2; transition: background .25s; }
+.mask .hit:hover { background: rgba(0,0,0,.12); }
+.mask .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.mask .play { position: absolute; right: 14px; bottom: 14px; z-index: 3; width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.credit { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; }
+.credit .note { font-size: 14px; line-height: 1.45; color: var(--muted); }
+.now-media .mask { border-radius: 6px; }
 
-/* Full-screen view for shared posts */
+/* Full-screen view: the full Instagram post */
 .lb { position: fixed; inset: 0; z-index: 50; background: rgba(8,8,8,.95); display: flex; align-items: center; justify-content: center; padding: 64px 24px 32px; overflow-y: auto; animation: fade .25s ease both; }
 .lb[hidden] { display: none; }
 .lb-body { width: 100%; max-width: 540px; margin: auto; }
@@ -91,7 +92,6 @@ main { padding-top: 40px; }
   .grid { grid-template-columns: minmax(0, 1fr); }
   .card.big { grid-column: auto; }
   .now-title { font-size: 23px; }
-  .shared .say { font-size: 17px; }
   .lb { padding: 64px 12px 24px; }
 }
 

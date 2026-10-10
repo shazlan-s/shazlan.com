@@ -17,12 +17,12 @@
     { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/ChOi8XrJJSi/", "date": "2022-08-13" },
     { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/CRLSmEbJdki/", "date": "2021-07-10" },
     { "kind": "video", "source": "mine", "platform": "instagram", "account": "shazlan", "url": "https://www.instagram.com/reel/CPz594BpTga/", "date": "2021-06-07", "large": true },
-    { "kind": "photo", "source": "shared", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CE27VArJmMv/", "date": "2025-01-30", "title": "Shoreline at dusk", "note": "Stand-in for someone else's post. Your note on why you shared it goes here." },
+    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CE27VArJmMv/", "date": "2020-09-07" },
     { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CE16dX0JmEc/", "date": "2020-09-07" },
     { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/CDveMmqpSLk/", "date": "2020-08-11", "large": true },
     { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B_4_c1iJ096/", "date": "2020-05-07" },
     { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B6wO4WdpVXf/", "date": "2020-01-01" },
     { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B4FCkixpeTB/", "date": "2019-10-26", "large": true },
-    { "kind": "photo", "source": "shared", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B2FXwh5Jgj8/", "date": "2024-11-13", "title": "Gull in flight", "note": "A second stand-in. Click either card to see how the original opens." }
+    { "kind": "photo", "source": "mine", "platform": "instagram", "account": "pic_shaz", "url": "https://www.instagram.com/p/B2FXwh5Jgj8/", "date": "2019-09-06" }
   ]
 }

@@ -82,31 +82,44 @@
     return linkCard(item);
   }
 
-  // Someone else's post: a card in the site's own style. The original opens on click.
-  function sharedCard(item) {
-    var handle = '@' + (item.account || '').replace(/^@/, '');
-    var where = item.platform ? item.platform.charAt(0).toUpperCase() + item.platform.slice(1) : 'Web';
-    var what = item.kind === 'video' ? 'reel' : 'post';
-    var btn = el('button', { 'class': 'shared', type: 'button', 'aria-label': 'Open ' + handle + "'s " + what }, [
-      el('div', { 'class': 'row' }, [
-        el('span', { 'class': 'label', text: 'Shared · ' + where + ' ' + what })
-      ]),
-      el('div', { 'class': 'who2' }, [
-        el('div', { 'class': 'avatar', 'aria-hidden': 'true', text: handle.charAt(1).toUpperCase() }),
-        el('div', { 'class': 'acct' }, [
-          el('span', { 'class': 'handle', text: handle }),
-          item.title ? el('span', { 'class': 'desc', text: item.title }) : null
-        ])
-      ]),
-      item.note ? el('span', { 'class': 'say', text: item.note }) : null,
-      el('span', { 'class': 'label', text: 'Opens the original' })
+  // Trimmed Instagram embed: only the photo/video frame shows; the full post opens on click.
+  var IG_HEAD = 54, IG_FOOT = 154; // Instagram embed header and footer heights (px)
+  function trimmed(item) {
+    var box = el('div', { 'class': 'mask' });
+    if (item.ratio) box.style.setProperty('--r', item.ratio);
+    box.appendChild(instagram(item));
+    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account });
+    hit.addEventListener('click', function () { openOriginal(item, hit); });
+    box.appendChild(hit);
+    if (item.kind === 'video') {
+      var play = el('span', { 'class': 'play', 'aria-hidden': 'true' });
+      play.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z" fill="#111"/></svg>';
+      box.appendChild(play);
+    }
+    // Once Instagram sizes its iframe, work out the photo's shape from it (unless content.json gives a ratio).
+    if (!item.ratio && window.ResizeObserver) {
+      var watch = new ResizeObserver(function () {
+        var f = box.querySelector('iframe.instagram-media');
+        if (!f) return;
+        var h = f.getBoundingClientRect().height, w = box.getBoundingClientRect().width;
+        var mediaH = h - IG_HEAD - IG_FOOT;
+        if (h > 200 && mediaH > 40 && w > 0) box.style.setProperty('--r', (w / mediaH).toFixed(4));
+      });
+      new MutationObserver(function () {
+        var f = box.querySelector('iframe.instagram-media');
+        if (f && !f.__watched) { f.__watched = true; watch.observe(f); }
+      }).observe(box, { childList: true, subtree: true });
+    }
+    return box;
+  }
+
+  function credit(item) {
+    var who = '@' + (item.account || '').replace(/^@/, '');
+    var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
+    return el('div', { 'class': 'credit' }, [
+      el('span', { 'class': 'label', text: line }),
+      item.note ? el('span', { 'class': 'note', text: item.note }) : null
     ]);
-    var arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    arrow.setAttribute('width', '18'); arrow.setAttribute('height', '18'); arrow.setAttribute('viewBox', '0 0 18 18'); arrow.setAttribute('aria-hidden', 'true');
-    arrow.innerHTML = '<path d="M5 13L13 5M6 5h7v7" stroke="#111" stroke-width="1.5" fill="none"/>';
-    btn.firstChild.appendChild(arrow);
-    btn.addEventListener('click', function () { openOriginal(item, btn); });
-    return btn;
   }
 
   var lastFocus = null;
@@ -162,7 +175,7 @@
     var now = items.filter(function (i) { return i.now; })[0];
     if (now) {
       var sec = document.getElementById('now');
-      sec.appendChild(el('div', { 'class': 'now-media' }, [media(now)]));
+      sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : media(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
         el('span', { 'class': 'label', text: 'Now · ' + fmtDate(now.date) }),
         now.title ? el('h2', { 'class': 'now-title', text: now.title }) : null,
@@ -176,10 +189,10 @@
     gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
     var rest = items.filter(function (i) { return !i.now; });
     rest.forEach(function (item, n) {
-      var shared = item.source === 'shared';
+      var ig = item.platform === 'instagram';
       var card = el('article', { 'class': 'card' + (item.large ? ' big' : ''), 'data-kind': item.kind }, [
-        shared ? sharedCard(item) : media(item),
-        !shared && item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null
+        ig ? trimmed(item) : media(item),
+        ig ? credit(item) : (item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null)
       ]);
       card.style.animationDelay = (n * 50) + 'ms';
       grid.appendChild(card);
