@@ -20,4 +20,4 @@ Add an entry to `items` in `content.json`:
 - `source`: `mine` or `shared`
 - `platform`: `instagram`, `youtube`, `spotify`, or anything else for a plain link card
 - `date`: `YYYY-MM-DD`, used for ordering (newest first)
-- Optional: `"note"` (your own site caption, shown under the card), `"caption"` (the original post's caption, shown smaller underneath), `"title"`, `"tags"` (a list of keywords for search, e.g. `["food", "japan"]`), `"large": true` (spans two columns), `"now": true` (shown at the top; keep only one)
+- Optional: `"note"` (your own site caption, shown under the card), `"caption"` (the original post's caption, shown smaller underneath), `"title"`, `"tags"` (a list of keywords for search, e.g. `["food", "japan"]`), `"size"`: `"small"` (1 column, the default), `"medium"` (2 columns) or `"large"` (3 columns, the full row), `"now": true` (shown at the top; keep only one)

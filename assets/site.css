@@ -51,6 +51,7 @@ main { padding-top: 40px; }
 .card { min-width: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
 .card[hidden] { display: none; }
 .card.big { grid-column: span 2; }
+.card.full { grid-column: 1 / -1; }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
 .meta { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; }
@@ -132,7 +133,7 @@ main { padding-top: 40px; }
   .search { width: 100%; }
   .search input { width: 100%; }
   .grid { grid-template-columns: minmax(0, 1fr); }
-  .card.big { grid-column: auto; }
+  .card.big, .card.full { grid-column: auto; }
   .now-title { font-size: 23px; }
   .lb { padding: 64px 12px 24px; }
 }

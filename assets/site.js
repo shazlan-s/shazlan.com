@@ -306,7 +306,9 @@
     gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
     var rest = items.filter(function (i) { return !i.now; });
     rest.forEach(function (item, n) {
-      var card = el('article', { 'class': 'card' + (item.large ? ' big' : ''), 'data-kind': item.kind }, [
+      // Size: "small" (1 column), "medium" (2) or "large" (3, the full row). "large": true is the old way of saying medium.
+      var size = item.size || (item.large ? 'medium' : 'small');
+      var card = el('article', { 'class': 'card' + (size === 'medium' ? ' big' : size === 'large' ? ' full' : ''), 'data-kind': item.kind }, [
         tile(item),
         credit(item)
       ]);

@@ -139,12 +139,12 @@
       "date": "2021-06-07",
       "note": "Still the benchmark for nasi kandar, as far as I'm concerned.",
       "caption": "Too good. Had this yesterday and I am still not over it. The best Nasi Kandaq I have had in a long while. @nasikandarsaddam",
-      "large": true,
       "tags": [
         "food",
         "nasi kandar",
         "malaysia"
-      ]
+      ],
+      "size": "medium"
     },
     {
       "kind": "photo",
@@ -184,14 +184,14 @@
       "url": "https://www.instagram.com/p/CDveMmqpSLk/",
       "date": "2020-08-11",
       "note": "Redang water really is that colour.",
-      "large": true,
       "tags": [
         "photography",
         "travel",
         "redang",
         "island",
         "malaysia"
-      ]
+      ],
+      "size": "medium"
     },
     {
       "kind": "photo",
@@ -231,14 +231,14 @@
       "url": "https://www.instagram.com/p/B4FCkixpeTB/",
       "date": "2019-10-26",
       "note": "Patient subject. I was not.",
-      "large": true,
       "tags": [
         "photography",
         "wildlife",
         "cheetah",
         "singapore",
         "zoo"
-      ]
+      ],
+      "size": "medium"
     },
     {
       "kind": "photo",
@@ -308,14 +308,14 @@
       "account": "shazlans",
       "url": "https://www.youtube.com/watch?v=Q5_fGi8r50I",
       "date": "2013-03-21",
-      "large": true,
       "caption": "At my favorite new sushi place - Hinata. Sushi Chef Yosa at work.",
       "note": "Watching a sushi chef work never gets old.",
       "tags": [
         "food",
         "sushi",
         "japanese"
-      ]
+      ],
+      "size": "large"
     },
     {
       "kind": "quote",
@@ -324,7 +324,6 @@
       "account": "Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu",
       "date": "2026-10-05",
-      "large": true,
       "text": "It is primarily a ground-based fighting style.",
       "caption": "Brazilian jiu-jitsu",
       "note": "The shortest possible explanation of why my knees hurt.",
@@ -332,6 +331,38 @@
         "bjj",
         "jiu-jitsu",
         "reading"
+      ],
+      "size": "medium"
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "youtube",
+      "account": "shazlans",
+      "url": "https://www.youtube.com/watch?v=OTxEbpIYjSo",
+      "date": "2012-11-15",
+      "size": "medium",
+      "caption": "My Home Gym",
+      "note": "Where the kettlebell habit started.",
+      "tags": [
+        "training",
+        "kettlebell",
+        "gym"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "mine",
+      "platform": "youtube",
+      "account": "shazlans",
+      "url": "https://www.youtube.com/watch?v=5eCxVqnTNiI",
+      "date": "2011-06-25",
+      "size": "small",
+      "caption": "CF 1 Certification Day 1",
+      "note": "Day one of a long weekend of learning.",
+      "tags": [
+        "training",
+        "certification"
       ]
     }
   ]
