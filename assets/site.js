@@ -124,8 +124,8 @@
     var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
     return el('div', { 'class': 'credit' }, [
       el('span', { 'class': 'label', text: line }),
-      item.note ? el('span', { 'class': 'note', text: item.note }) : null,
-      item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
+      item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null,
+      item.note ? el('span', { 'class': 'note', text: item.note }) : null
     ]);
   }
 
@@ -185,8 +185,8 @@
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : media(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
         el('span', { 'class': 'label', text: 'Now · ' + fmtDate(now.date) }),
-        now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
-        now.caption ? el('p', { 'class': 'now-note', text: now.caption }) : null
+        (now.caption || now.note) ? el('h2', { 'class': 'now-title', text: now.caption || now.note }) : null,
+        (now.caption && now.note) ? el('p', { 'class': 'now-note', text: now.note }) : null
       ]));
       sec.hidden = false;
     }

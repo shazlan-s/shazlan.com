@@ -44,7 +44,7 @@ a:hover { color: var(--muted); }
 .now-text { flex: 1 1 280px; display: flex; flex-direction: column; gap: 14px; }
 .label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
 .now-title { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 500; letter-spacing: -.02em; }
-.now-note { margin: 0; font-size: 16px; line-height: 1.55; color: var(--muted); }
+.now-note { margin: 0; }
 
 /* Grid: a masonry built on CSS grid. Each card's row span is measured in site.js. */
 main { padding-top: 40px; }
@@ -72,8 +72,9 @@ main { padding-top: 40px; }
 .mask .hit:hover { background: rgba(0,0,0,.12); }
 .mask .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .credit { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; }
-.credit .note { font-size: 15px; line-height: 1.45; color: var(--ink); }
 .credit .orig { font-size: 13px; line-height: 1.45; color: var(--faint); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* Your own site caption sits in its own box, apart from the original post caption */
+.credit .note, .now-note { font-size: 15px; line-height: 1.45; color: var(--ink); background: #efefef; border-radius: 6px; padding: 10px 12px; margin-top: 2px; }
 .now-media .mask { border-radius: 6px; }
 
 /* Full-screen view: the full Instagram post */
