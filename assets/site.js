@@ -136,7 +136,7 @@
     return row;
   }
 
-  var PLATFORM = { instagram: 'Instagram', youtube: 'YouTube', spotify: 'Spotify', threads: 'Threads' };
+  var PLATFORM = { instagram: 'Instagram', youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music', threads: 'Threads' };
   function credit(item) {
     var social = item.platform === 'instagram' || item.platform === 'youtube' || item.platform === 'threads';
     var who = social ? '@' + (item.account || '').replace(/^@/, '') : (item.account || '');
@@ -196,6 +196,28 @@
     return box;
   }
 
+  // Apple Music: the album art; Apple's player appears in its place on click.
+  function appleTile(item) {
+    var u = new URL(item.url);
+    var song = u.searchParams.has('i') || /\/song\//.test(u.pathname);
+    u.hostname = 'embed.music.apple.com';
+    u.searchParams.delete('uo');
+    var box = el('div', { 'class': 'tile square' });
+    if (item.image) box.appendChild(el('img', { src: item.image, alt: item.caption || 'Album art', loading: 'lazy' }));
+    var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Play ' + (item.caption || 'track') + ' on Apple Music' }, [playIcon()]);
+    hit.addEventListener('click', function () {
+      box.className = 'tile player apple' + (song ? ' song' : '');
+      box.innerHTML = '';
+      box.appendChild(el('iframe', {
+        src: u.toString(), title: item.caption || 'Apple Music',
+        allow: 'autoplay *; encrypted-media *; fullscreen *; clipboard-write',
+        sandbox: 'allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation'
+      }));
+    });
+    box.appendChild(hit);
+    return box;
+  }
+
   // A web link: its preview image; opens the page in a new tab.
   function linkTile(item) {
     var a = el('a', { 'class': 'tile link', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open ' + (item.caption || item.url) });
@@ -234,6 +256,7 @@
     if (item.platform === 'instagram') return trimmed(item);
     if (item.platform === 'youtube') return youtubeTile(item);
     if (item.platform === 'spotify') return spotifyTile(item);
+    if (item.platform === 'apple') return appleTile(item);
     if (item.kind === 'post') return textTile(item);
     return linkTile(item);
   }

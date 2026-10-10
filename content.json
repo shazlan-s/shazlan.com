@@ -275,6 +275,22 @@
       "pinned": true
     },
     {
+      "kind": "music",
+      "source": "shared",
+      "platform": "apple",
+      "account": "Nujabes",
+      "url": "https://music.apple.com/my/album/aruarian-dance/1721842998?i=1721843001",
+      "date": "2026-10-08",
+      "image": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/be/59/2b/be592b54-496f-bd59-9e46-49fa2f45a717/VICL-61411.jpg/600x600bb.jpg",
+      "caption": "Aruarian Dance",
+      "note": "Late-night work music. Never gets old.",
+      "tags": [
+        "music",
+        "hip hop",
+        "focus"
+      ]
+    },
+    {
       "kind": "link",
       "source": "shared",
       "platform": "web",

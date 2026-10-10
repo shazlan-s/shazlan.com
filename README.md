@@ -18,7 +18,7 @@ Add an entry to `items` in `content.json`:
 
 - `kind`: `photo`, `video`, `post`, `music`, `quote`, `link` or `comment` (a `quote` or `post` puts its words in `"text"`)
 - `source`: `mine` or `shared`
-- `platform`: `instagram`, `youtube`, `spotify`, or anything else for a plain link card
+- `platform`: `instagram`, `youtube`, `spotify`, `apple` (Apple Music; add `"image"` for the album art), or anything else for a plain link card
 - `date`: `YYYY-MM-DD`, used for ordering (newest first)
 - Optional: `"note"` (your own site caption, shown under the card), `"caption"` (the original post's caption, shown smaller underneath), `"title"`, `"tags"` (a list of keywords for search, e.g. `["food", "japan"]`), `"size"`: `"small"` (1 column, the default), `"medium"` (2 columns) or `"large"` (3 columns, the full row), `"now": true` (shown at the top; keep only one), `"pinned": true` (held in the "On my mind lately" row under Now; up to three), `"archived": true` (hidden from the site but kept on record; remove it to bring the piece back)
 

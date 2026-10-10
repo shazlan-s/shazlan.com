@@ -89,6 +89,8 @@ main { padding-top: 40px; }
 .tile.link { aspect-ratio: 1.91 / 1; }
 .tile iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .tile.player { aspect-ratio: auto; height: 352px; background: transparent; }
+.tile.player.apple { height: 450px; border-radius: 10px; }
+.tile.player.apple.song { height: 175px; }
 .tile .hit { all: unset; cursor: pointer; position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: 14px; box-sizing: border-box; }
 .tile .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .playbtn, .tile .go { width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center; }
