@@ -87,6 +87,7 @@ async function threads(token, since) {
       // A text post that links to something the site can show (Instagram, YouTube, Spotify)
       // becomes that piece, with the Threads words as the site caption.
       const linked = !pictures && t.link_attachment_url ? await linkedPiece(t.link_attachment_url) : null;
+      if (t.link_attachment_url) console.log(`  ${date} ${t.permalink} links to ${linked ? linked.platform + ' ' + linked.url : 'a web page (kept as a text card)'}`);
       if (linked) {
         out.push(Object.assign(linked, {
           source: ['shazlan', 'pic_shaz', 'shazlans', 'Shazlan Sufian'].includes(linked.account) ? 'mine' : 'shared',
