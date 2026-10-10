@@ -82,6 +82,53 @@
     return linkCard(item);
   }
 
+  // Someone else's post: a card in the site's own style. The original opens on click.
+  function sharedCard(item) {
+    var handle = '@' + (item.account || '').replace(/^@/, '');
+    var where = item.platform ? item.platform.charAt(0).toUpperCase() + item.platform.slice(1) : 'Web';
+    var what = item.kind === 'video' ? 'reel' : 'post';
+    var btn = el('button', { 'class': 'shared', type: 'button', 'aria-label': 'Open ' + handle + "'s " + what }, [
+      el('div', { 'class': 'row' }, [
+        el('span', { 'class': 'label', text: 'Shared · ' + where + ' ' + what })
+      ]),
+      el('div', { 'class': 'who2' }, [
+        el('div', { 'class': 'avatar', 'aria-hidden': 'true', text: handle.charAt(1).toUpperCase() }),
+        el('div', { 'class': 'acct' }, [
+          el('span', { 'class': 'handle', text: handle }),
+          item.title ? el('span', { 'class': 'desc', text: item.title }) : null
+        ])
+      ]),
+      item.note ? el('span', { 'class': 'say', text: item.note }) : null,
+      el('span', { 'class': 'label', text: 'Opens the original' })
+    ]);
+    var arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    arrow.setAttribute('width', '18'); arrow.setAttribute('height', '18'); arrow.setAttribute('viewBox', '0 0 18 18'); arrow.setAttribute('aria-hidden', 'true');
+    arrow.innerHTML = '<path d="M5 13L13 5M6 5h7v7" stroke="#111" stroke-width="1.5" fill="none"/>';
+    btn.firstChild.appendChild(arrow);
+    btn.addEventListener('click', function () { openOriginal(item, btn); });
+    return btn;
+  }
+
+  var lastFocus = null;
+  function openOriginal(item, from) {
+    var lb = document.getElementById('lb'), body = document.getElementById('lb-body');
+    body.innerHTML = '';
+    body.appendChild(media(item));
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lastFocus = from;
+    document.getElementById('lb-close').focus();
+    processEmbeds();
+  }
+  function closeOriginal() {
+    var lb = document.getElementById('lb');
+    if (lb.hidden) return;
+    lb.hidden = true;
+    document.getElementById('lb-body').innerHTML = '';
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+
   function processEmbeds() {
     if (document.querySelector('blockquote.instagram-media')) {
       loadScript('https://www.instagram.com/embed.js', function () {
@@ -129,9 +176,10 @@
     gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;
     var rest = items.filter(function (i) { return !i.now; });
     rest.forEach(function (item, n) {
+      var shared = item.source === 'shared';
       var card = el('article', { 'class': 'card' + (item.large ? ' big' : ''), 'data-kind': item.kind }, [
-        media(item),
-        item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null
+        shared ? sharedCard(item) : media(item),
+        !shared && item.note ? el('div', { 'class': 'meta' }, [el('span', { 'class': 'note', text: item.note })]) : null
       ]);
       card.style.animationDelay = (n * 50) + 'ms';
       grid.appendChild(card);
@@ -155,6 +203,10 @@
       });
       nav.appendChild(b);
     });
+
+    document.getElementById('lb-close').addEventListener('click', closeOriginal);
+    document.getElementById('lb').addEventListener('click', function (e) { if (e.target.id === 'lb') closeOriginal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeOriginal(); });
 
     window.addEventListener('resize', function () {
       gapPx = parseFloat(getComputedStyle(grid).columnGap) || 22;

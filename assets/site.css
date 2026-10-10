@@ -54,6 +54,28 @@ main { padding-top: 40px; }
 .card iframe.instagram-media, .now iframe.instagram-media { border-radius: 6px !important; }
 .card.big .instagram-media { max-width: 100% !important; }
 
+/* Shared card: other people's posts, shown in the site's own style */
+.shared { all: unset; cursor: pointer; box-sizing: border-box; width: 100%; display: flex; flex-direction: column; gap: 16px; padding: 22px; border: 1px solid var(--line); border-radius: 6px; background: #fff; transition: background .2s; }
+.shared:hover { background: #f4f4f4; }
+.shared:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.shared .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.shared .who2 { display: flex; gap: 12px; align-items: center; min-width: 0; }
+.shared .avatar { width: 36px; height: 36px; border-radius: 999px; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 13px; flex-shrink: 0; }
+.shared .acct { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.shared .handle { font-size: 15px; font-weight: 500; }
+.shared .desc { font-size: 13px; color: var(--faint); }
+.shared .say { font-size: 20px; line-height: 1.4; letter-spacing: -.01em; }
+
+/* Full-screen view for shared posts */
+.lb { position: fixed; inset: 0; z-index: 50; background: rgba(8,8,8,.95); display: flex; align-items: center; justify-content: center; padding: 64px 24px 32px; overflow-y: auto; animation: fade .25s ease both; }
+.lb[hidden] { display: none; }
+.lb-body { width: 100%; max-width: 540px; margin: auto; }
+.lb-close { all: unset; cursor: pointer; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 999px; }
+.lb-close:hover { background: #222; }
+.lb-close:focus-visible { outline: 2px solid #fff; }
+.lb .instagram-media { margin: 0 auto !important; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
 /* Footer */
 .foot { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--muted); }
 .links { display: flex; gap: 24px; }
@@ -69,6 +91,8 @@ main { padding-top: 40px; }
   .grid { grid-template-columns: minmax(0, 1fr); }
   .card.big { grid-column: auto; }
   .now-title { font-size: 23px; }
+  .shared .say { font-size: 17px; }
+  .lb { padding: 64px 12px 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
