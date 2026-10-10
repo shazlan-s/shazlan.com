@@ -348,10 +348,10 @@
     var now = items.filter(function (i) { return i.now; })[0];
     if (now) {
       var sec = document.getElementById('now');
+      sec.appendChild(el('h2', { 'class': 'section-title', text: 'Now' }));
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : tile(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
-        el('span', { 'class': 'label', text: 'Now' }),
-        now.note ? el('h2', { 'class': 'now-title', text: now.note }) : null,
+        now.note ? el('h3', { 'class': 'now-title', text: now.note }) : null,
         el('div', { 'class': 'source' }, [
           el('span', { 'class': 'label', text: ['@' + (now.account || '').replace(/^@/, ''), PLATFORM[now.platform], fmtDate(now.date)].filter(Boolean).join(' · ') }),
           now.caption ? el('span', { 'class': 'orig', text: now.caption }) : null
@@ -415,6 +415,7 @@
       });
       document.getElementById('now').hidden = !now || !browsing;
       document.getElementById('pinned').hidden = !pinned.length || !browsing;
+      document.getElementById('rest-title').hidden = !browsing;
       empty.hidden = shown > 0;
       empty.textContent = shown ? '' : 'Nothing here matches \u201c' + state.q.trim() + '\u201d.';
     }
