@@ -24,10 +24,24 @@
       "source": "mine",
       "platform": "instagram",
       "account": "shazlan",
+      "url": "https://www.instagram.com/p/BvS_JoJFlT3/",
+      "date": "2019-03-22",
+      "note": "Countdown to Japow 2026/2027 season starts now",
+      "now": true,
+      "tags": [
+        "japow",
+        "skiing",
+        "snow"
+      ]
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
       "url": "https://www.instagram.com/p/DKXDlqIpD9v/",
       "date": "2025-06-01",
       "caption": "And this is 50! No better way to spend it ❤️",
-      "now": true,
       "tags": [
         "milestone",
         "birthday",
