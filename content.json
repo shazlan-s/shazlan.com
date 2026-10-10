@@ -299,6 +299,17 @@
         "training",
         "comeback"
       ]
+    },
+    {
+      "kind": "post",
+      "source": "mine",
+      "platform": "threads",
+      "account": "shazlan",
+      "url": "https://www.threads.com/@shazlan/post/DeUpu_GEqrm",
+      "date": "2026-10-10",
+      "text": "His music has that same feeling my teenage years had. Hard to put into words",
+      "tags": [],
+      "auto": true
     }
   ]
 }
