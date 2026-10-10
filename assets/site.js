@@ -208,9 +208,13 @@
 
   // A text post (Threads, X): the words are the picture.
   function textTile(item) {
-    return el('a', { 'class': 'tile text', href: item.url, target: '_blank', rel: 'noopener' }, [
-      el('span', { 'class': 'words', text: item.text || '' })
+    var a = el('a', { 'class': 'tile text', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open the original post' }, [
+      el('p', { 'class': 'words', text: item.text || '' })
     ]);
+    var go = el('span', { 'class': 'go', 'aria-hidden': 'true' });
+    go.innerHTML = '<svg width="16" height="16" viewBox="0 0 18 18"><path d="M5 13L13 5M6 5h7v7" stroke="#111" stroke-width="1.6" fill="none"/></svg>';
+    a.appendChild(go);
+    return a;
   }
 
   // A quote from an article or blog post: the line itself, set large on a dark card.

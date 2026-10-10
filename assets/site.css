@@ -88,15 +88,17 @@ main { padding-top: 40px; }
 .tile .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .playbtn, .tile .go { width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center; }
 .tile .go { position: absolute; right: 14px; bottom: 14px; }
-.tile.text { background: #fff; border: 1px solid var(--line); padding: 24px 22px; text-decoration: none; color: var(--ink); transition: background .2s; }
+/* Word tiles: your own text posts (white) and quotes from others (black) share one layout */
+.tile.text, .tile.quote { padding: 26px 24px 72px; text-decoration: none; transition: background .2s; }
+.tile.text .words, .tile.quote .words { margin: 0; font-size: 24px; line-height: 1.35; font-weight: 300; letter-spacing: -.015em; }
+.card.big .tile.text .words, .card.big .tile.quote .words, .card.full .tile.text .words, .card.full .tile.quote .words { font-size: 32px; }
+.tile.text { background: #fff; border: 1px solid var(--line); color: var(--ink); }
 .tile.text:hover { background: #f4f4f4; }
-.tile.text .words { font-size: 21px; line-height: 1.4; letter-spacing: -.01em; }
+.tile.text .go { background: #efefef; }
 
-.tile.quote { background: var(--ink); color: #fff; text-decoration: none; padding: 26px 24px 72px; transition: background .2s; }
+.tile.quote { background: var(--ink); color: #fff; }
 .tile.quote:hover { background: #262626; }
 .tile.quote .mark { display: block; font-size: 64px; line-height: .6; height: 28px; font-weight: 300; color: #8a8a8a; }
-.tile.quote .words { margin: 0; font-size: 24px; line-height: 1.35; font-weight: 300; letter-spacing: -.015em; }
-.card.big .tile.quote .words { font-size: 32px; }
 
 /* Tags: click to see related pieces */
 .tags { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 2px; }
