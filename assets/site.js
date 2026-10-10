@@ -91,11 +91,7 @@
     var hit = el('button', { 'class': 'hit', type: 'button', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account });
     hit.addEventListener('click', function () { openOriginal(item, hit); });
     box.appendChild(hit);
-    if (item.kind === 'video') {
-      var play = el('span', { 'class': 'play', 'aria-hidden': 'true' });
-      play.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5v11l9-5.5z" fill="#111"/></svg>';
-      box.appendChild(play);
-    }
+    if (item.kind === 'video') box.classList.add('reel');
     // Once Instagram sizes its iframe, work out the photo's shape from it (unless content.json gives a ratio).
     if (!item.ratio && window.ResizeObserver) {
       var watch = new ResizeObserver(function () {
@@ -103,7 +99,15 @@
         if (!f) return;
         var h = f.getBoundingClientRect().height, w = box.getBoundingClientRect().width;
         var mediaH = h - IG_HEAD - IG_FOOT;
-        if (h > 200 && mediaH > 40 && w > 0) box.style.setProperty('--r', (w / mediaH).toFixed(4));
+        if (h > 200 && mediaH > 40 && w > 0) {
+          var r = w / mediaH;
+          box.style.setProperty('--r', r.toFixed(4));
+          // Reels are tall (9:16) inside a wider frame, which leaves black side bars. Zoom in to fill.
+          if (item.kind === 'video') {
+            box.style.setProperty('--s', Math.max(1, r / 0.5625).toFixed(3));
+            box.style.setProperty('--oy', (IG_HEAD + 1 + mediaH / 2) + 'px');
+          }
+        }
       });
       new MutationObserver(function () {
         var f = box.querySelector('iframe.instagram-media');

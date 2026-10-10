@@ -59,10 +59,10 @@ main { padding-top: 40px; }
 .mask { position: relative; overflow: hidden; border-radius: 6px; background: #e9e9e9; aspect-ratio: var(--r, 1); }
 .mask blockquote.instagram-media { visibility: hidden; }
 .mask iframe.instagram-media { position: absolute !important; top: -55px !important; left: -1px !important; width: calc(100% + 2px) !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; pointer-events: none; }
+.mask.reel iframe.instagram-media { transform: scale(var(--s, 1)); transform-origin: 50% var(--oy, 50%); }
 .mask .hit { all: unset; cursor: pointer; position: absolute; inset: 0; z-index: 2; transition: background .25s; }
 .mask .hit:hover { background: rgba(0,0,0,.12); }
 .mask .hit:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-.mask .play { position: absolute; right: 14px; bottom: 14px; z-index: 3; width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.92); display: flex; align-items: center; justify-content: center; pointer-events: none; }
 .credit { display: flex; flex-direction: column; gap: 6px; padding: 10px 2px 0; }
 .credit .note { font-size: 14px; line-height: 1.45; color: var(--muted); }
 .now-media .mask { border-radius: 6px; }
