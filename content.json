@@ -38,6 +38,22 @@
     },
     {
       "kind": "video",
+      "source": "shared",
+      "platform": "youtube",
+      "account": "The Vintage Tribute",
+      "url": "https://www.youtube.com/watch?v=Z0eflYLkI4A",
+      "date": "2026-10-11",
+      "caption": "Waiting For A Star To Fall: A Tribute to 80's Entertainment",
+      "note": "Growing up in the 80s, all in one video. It has all the feels.",
+      "pinned": true,
+      "tags": [
+        "music",
+        "80s",
+        "nostalgia"
+      ]
+    },
+    {
+      "kind": "video",
       "source": "mine",
       "platform": "instagram",
       "account": "shazlan",
