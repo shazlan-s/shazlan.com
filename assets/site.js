@@ -119,6 +119,19 @@
     return box;
   }
 
+  // Tags under a piece. Clicking one searches the site for it.
+  var onTag = function () {};
+  function tagList(item) {
+    if (!item.tags || !item.tags.length) return null;
+    var row = el('div', { 'class': 'tags' });
+    item.tags.forEach(function (t) {
+      var b = el('button', { 'class': 'tag', type: 'button', text: t, 'aria-label': 'Show more tagged ' + t });
+      b.addEventListener('click', function () { onTag(t); });
+      row.appendChild(b);
+    });
+    return row;
+  }
+
   function credit(item) {
     var who = '@' + (item.account || '').replace(/^@/, '');
     var line = (item.source === 'shared' ? 'Shared from ' + who : who) + ' · ' + fmtDate(item.date);
@@ -127,7 +140,8 @@
         el('span', { 'class': 'label', text: line }),
         item.caption ? el('span', { 'class': 'orig', text: item.caption }) : null
       ]),
-      item.note ? el('span', { 'class': 'note', text: item.note }) : null
+      item.note ? el('span', { 'class': 'note', text: item.note }) : null,
+      tagList(item)
     ]);
   }
 
@@ -191,7 +205,8 @@
         el('div', { 'class': 'source' }, [
           el('span', { 'class': 'label', text: '@' + (now.account || '').replace(/^@/, '') + ' · ' + fmtDate(now.date) }),
           now.caption ? el('span', { 'class': 'orig', text: now.caption }) : null
-        ])
+        ]),
+        tagList(now)
       ]));
       sec.hidden = false;
     }
@@ -245,6 +260,10 @@
 
     var search = document.getElementById('search');
     search.addEventListener('input', function () { state.q = search.value; apply(); });
+    onTag = function (t) {
+      search.value = t; state.q = t; apply();
+      document.querySelector('.top').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     document.getElementById('lb-close').addEventListener('click', closeOriginal);
     document.getElementById('lb').addEventListener('click', function (e) { if (e.target.id === 'lb') closeOriginal(); });
