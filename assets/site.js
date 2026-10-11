@@ -92,7 +92,8 @@
   function trimmed(item) {
     var box = el('div', { 'class': 'mask' });
     if (item.ratio) box.style.setProperty('--r', item.ratio);
-    box.appendChild(instagram(item));
+    // The Instagram embed is only loaded when the tile comes near the screen (embeds are heavy).
+    lazy(box, function () { box.insertBefore(instagram(item), box.firstChild); });
     // Clicking opens the post on Instagram itself (the Instagram app on phones), where videos always play.
     var hit = el('a', { 'class': 'hit', href: item.url, target: '_blank', rel: 'noopener', 'aria-label': 'Open ' + (item.kind === 'video' ? 'video' : 'photo') + ' from @' + item.account + ' on Instagram' + (item.tags ? ': ' + item.tags.join(', ') : '') });
     box.appendChild(hit);
@@ -329,6 +330,22 @@
   }
 
 
+  // Load embeds only as their tiles approach the screen. Hidden tiles (beyond "Show more", or filtered out)
+  // never load until they are shown.
+  var pending = null;
+  function soon() { clearTimeout(pending); pending = setTimeout(processEmbeds, 80); }
+  var lazyIO = window.IntersectionObserver ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting || e.target.__loaded) return;
+      e.target.__loaded = true; lazyIO.unobserve(e.target);
+      e.target.__load(); soon();
+    });
+  }, { rootMargin: '800px 0px' }) : null;
+  function lazy(box, load) {
+    if (!lazyIO) { load(); return; }
+    box.__load = load; lazyIO.observe(box);
+  }
+
   function processEmbeds() {
     if (document.querySelector('blockquote.instagram-media')) {
       loadScript('https://www.instagram.com/embed.js', function () {
@@ -420,15 +437,24 @@
     var state = { kind: 'all', q: '' };
     var empty = el('p', { 'class': 'empty', hidden: '' });
     grid.parentNode.appendChild(empty);
+    // "And the rest" shows a batch at a time (6 on phones, 12 on wider screens) so the footer stays close.
+    // Filters, search and tags always show every match.
+    var BATCH = window.matchMedia('(max-width: 720px)').matches ? 6 : 12, limit = BATCH;
+    var more = el('button', { 'class': 'pill more', type: 'button', text: 'Show more', hidden: '' });
+    more.addEventListener('click', function () { limit += BATCH; apply(); });
+    grid.parentNode.appendChild(el('div', { 'class': 'more-row' }, [more]));
     function apply() {
       var words = state.q.toLowerCase().split(/\s+/).filter(Boolean), shown = 0;
       var browsing = state.kind === 'all' && !words.length;
+      var hiddenByLimit = 0;
       grid.querySelectorAll('.card').forEach(function (c) {
         var ok = (state.kind === 'all' || c.dataset.kind === state.kind) &&
           words.every(function (w) { return c.dataset.text.indexOf(w) !== -1; }) &&
           !(browsing && c.dataset.pinned);
+        if (ok && browsing && shown >= limit) { ok = false; hiddenByLimit++; }
         c.hidden = !ok; if (ok) shown++;
       });
+      more.hidden = !hiddenByLimit;
       document.getElementById('now').hidden = !now || !browsing;
       document.getElementById('pinned').hidden = !pinned.length || !browsing;
       document.getElementById('rest-title').hidden = !browsing;

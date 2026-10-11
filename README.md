@@ -35,3 +35,9 @@ Add an entry to `items` in `content.json`:
 - Imported pieces carry `"auto": true`. Add a `note`, `size`, `pinned` or `archived` to them like any other piece.
 - Tokens live in repository secrets: `IG_TOKEN_SHAZLAN`, `IG_TOKEN_PIC_SHAZ`, `THREADS_TOKEN`.
 - To test, open Actions, choose "Import new posts", then "Run workflow". It defaults to a dry run that only reports what it would add.
+
+## Page behaviour
+
+- "And the rest" shows 6 pieces on phones and 12 on wider screens, with a "Show more" button for the next batch. Filters, search and tags always show every match.
+- Instagram embeds load only as their tiles come near the screen, so the first load stays fast.
+- `assets/og.png` is the picture shown when shazlan.com is shared (WhatsApp, LinkedIn and so on). `favicon.ico`, `assets/favicon-32.png` and `assets/apple-touch-icon.png` are the browser and home-screen icons.

@@ -29,6 +29,10 @@ a:hover { color: var(--muted); }
 .search input { all: unset; width: 140px; font-family: var(--sans); font-size: 14px; color: var(--ink); }
 .search input::placeholder { color: var(--faint); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.more-row { display: flex; justify-content: center; padding-top: 32px; }
+.pill.more { border: 1px solid var(--line); background: #fff; padding: 0 28px; }
+.pill.more:hover { border-color: var(--ink); background: #fff; }
+.pill.more[hidden] { display: none; }
 .empty { margin: 24px 0 0; font-size: 16px; color: var(--muted); }
 .empty[hidden] { display: none; }
 .pill { all: unset; cursor: pointer; flex-shrink: 0; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: 999px; font-family: var(--sans); font-size: 14px; color: var(--ink); transition: background .2s, color .2s; }
@@ -78,7 +82,7 @@ main { padding-top: 56px; }
 .mask { position: relative; overflow: hidden; border-radius: 6px; background: #e9e9e9; aspect-ratio: var(--r, 1); }
 .mask blockquote.instagram-media { visibility: hidden; }
 .mask iframe.instagram-media { position: absolute !important; top: -55px !important; left: -1px !important; width: calc(100% + 2px) !important; max-width: none !important; min-width: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; pointer-events: none; }
-.mask.reel { aspect-ratio: var(--ra, var(--r, 1)); background: #111; }
+.mask.reel { aspect-ratio: var(--ra, 0.5625); background: #111; }
 .mask.reel iframe.instagram-media { width: var(--iw, calc(100% + 2px)) !important; left: var(--il, -1px) !important; top: var(--it, -55px) !important; }
 .mask .hit { all: unset; cursor: pointer; position: absolute; inset: 0; z-index: 2; transition: background .25s; }
 .mask .hit:hover { background: rgba(0,0,0,.12); }
