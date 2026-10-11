@@ -40,6 +40,22 @@
       "kind": "video",
       "source": "shared",
       "platform": "youtube",
+      "account": "popsie-music",
+      "url": "https://www.youtube.com/watch?v=YboMMWb9DdY",
+      "date": "2026-10-11",
+      "caption": "80s Love Songs Playlist ☕ | Soft Rock Ballads & Classic Love Songs Mix | Vol.61",
+      "note": "I know this is AI. But I haven't enjoyed music this much in a long time. Growing up, I could mark the years by songs. Hear one from the past and I'm right back there. That's true for every decade I grew up in. Somewhere in the last ten years or so, that stopped. Maybe it's life. Maybe it's streaming. Maybe the new stuff just isn't mine. I can't pin it down. I've been thinking about it lately.",
+      "pinned": true,
+      "tags": [
+        "music",
+        "80s",
+        "nostalgia"
+      ]
+    },
+    {
+      "kind": "video",
+      "source": "shared",
+      "platform": "youtube",
       "account": "The Vintage Tribute",
       "url": "https://www.youtube.com/watch?v=Z0eflYLkI4A",
       "date": "2026-10-11",
@@ -74,7 +90,6 @@
       "url": "https://www.instagram.com/p/CpDAovPp4KD/",
       "date": "2023-02-24",
       "caption": "That’s it for us. Last day here",
-      "pinned": true,
       "tags": [
         "japow",
         "snow",
