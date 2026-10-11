@@ -86,6 +86,9 @@
 
   // Trimmed Instagram embed: only the photo/video frame shows; the post opens on Instagram on click.
   var IG_HEAD = 54, IG_FOOT = 154; // Instagram embed header and footer heights (px)
+  // How reels sit in their tiles: 'crop' keeps the 4:5 tile and trims top and bottom (chosen 11 Oct 2026);
+  // 'tall' would show the whole 9:16 reel.
+  var REEL_SHAPE = 'crop';
   function trimmed(item) {
     var box = el('div', { 'class': 'mask' });
     if (item.ratio) box.style.setProperty('--r', item.ratio);
@@ -108,10 +111,18 @@
           var mediaH = h - IG_HEAD - IG_FOOT;
           if (h > 200 && mediaH > 40) { r = w / mediaH; box.style.setProperty('--r', r.toFixed(4)); }
         }
-        // Reels are tall (9:16) inside a wider frame, which leaves black side bars. Zoom in to fill.
+        // Reels are tall (9:16) inside a wider frame, which leaves black side bars. Instead of zooming
+        // the picture (which blurs it), the embed is made wider so Instagram draws the reel itself at
+        // full size, then centred so only the reel shows.
         if (r && item.kind === 'video') {
-          box.style.setProperty('--s', Math.max(1, r / 0.5625).toFixed(3));
-          box.style.setProperty('--oy', (IG_HEAD + 1 + (w / r) / 2) + 'px');
+          var pw = Math.min(1, 0.5625 / r);            // the reel's share of the frame width
+          var iw = w / pw + 2, posterH = iw / r;        // embed width, and the reel's drawn height
+          var shape = REEL_SHAPE === 'tall' ? 0.5625 : r;
+          var boxH = w / shape;
+          box.style.setProperty('--ra', shape.toFixed(4));
+          box.style.setProperty('--iw', iw + 'px');
+          box.style.setProperty('--il', (-(iw - w) / 2) + 'px');
+          box.style.setProperty('--it', (-(IG_HEAD + 1) - Math.max(0, (posterH - boxH) / 2)) + 'px');
         }
       });
       watch.observe(box);
