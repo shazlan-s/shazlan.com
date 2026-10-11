@@ -170,7 +170,7 @@ function fromInstagram(p, pool) {
 }
 
 console.log(`Importing posts from ${since}${DRY ? ' (dry run)' : ''}`);
-let added = [], failed = 0;
+let added = [], failed = 0, failures = [];
 for (const a of ACCOUNTS) {
   const token = process.env[a.secret];
   if (!token) { console.log(`${a.secret}: not set, skipping`); continue; }
@@ -188,6 +188,7 @@ for (const a of ACCOUNTS) {
     added = added.concat(fresh);
   } catch (e) {
     failed++;
+    failures.push(`${a.secret}: ${e.message}`);
     console.log(`${a.secret}: FAILED (${e.message})`);
   }
 }
@@ -200,4 +201,18 @@ if (added.length && !DRY) {
 } else {
   console.log(added.length ? `Would add ${added.length} piece(s)` : 'Nothing new');
 }
-if (failed) process.exitCode = 1;
+if (failed) {
+  // A failed run makes GitHub email the owner. The summary says what broke in plain words.
+  process.exitCode = 1;
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    await writeFile(process.env.GITHUB_STEP_SUMMARY, [
+      '## New posts could not be fetched',
+      '',
+      ...failures.map((f) => `- ${f}`),
+      '',
+      'This usually means an access token has expired or been revoked.',
+      'Open a chat in the Shazlan.Com project and ask Claude to fix the import.',
+      ''
+    ].join('\n'), { flag: 'a' });
+  }
+}
