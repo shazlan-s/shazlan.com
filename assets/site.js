@@ -86,9 +86,9 @@
 
   // Trimmed Instagram embed: only the photo/video frame shows; the post opens on Instagram on click.
   var IG_HEAD = 54, IG_FOOT = 154; // Instagram embed header and footer heights (px)
-  // How reels sit in their tiles: 'crop' keeps the 4:5 tile and trims top and bottom (chosen 11 Oct 2026);
-  // 'tall' would show the whole 9:16 reel.
-  var REEL_SHAPE = 'crop';
+  // How reels sit in their tiles: 'tall' shows the whole 9:16 reel (chosen 11 Oct 2026);
+  // 'crop' would keep a 4:5 tile and trim the top and bottom.
+  var REEL_SHAPE = 'tall';
   function trimmed(item) {
     var box = el('div', { 'class': 'mask' });
     if (item.ratio) box.style.setProperty('--r', item.ratio);
