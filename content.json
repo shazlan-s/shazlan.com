@@ -345,6 +345,17 @@
         "music"
       ],
       "auto": true
+    },
+    {
+      "kind": "photo",
+      "source": "mine",
+      "platform": "instagram",
+      "account": "shazlan",
+      "url": "https://www.instagram.com/p/DeVv6Ptg2aW/",
+      "date": "2026-10-11",
+      "caption": "Don, Don, Don",
+      "tags": [],
+      "auto": true
     }
   ]
 }
