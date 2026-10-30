@@ -20,8 +20,9 @@
   }
 
   function fmtDate(iso) {
-    var d = new Date(iso + 'T00:00:00');
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    var p = String(iso).split('-').map(Number);
+    var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return p[2] + ' ' + m[p[1] - 1] + ' ' + p[0];
   }
 
   // ---- Embeds -------------------------------------------------------------
