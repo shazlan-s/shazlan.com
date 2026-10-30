@@ -21,7 +21,7 @@
 
   function fmtDate(iso) {
     var d = new Date(iso + 'T00:00:00');
-    return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   // ---- Embeds -------------------------------------------------------------
