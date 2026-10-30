@@ -387,7 +387,8 @@
       sec.appendChild(el('h2', { 'class': 'section-title', text: 'Now' }));
       sec.appendChild(el('div', { 'class': 'now-media' }, [now.platform === 'instagram' ? trimmed(now) : tile(now)]));
       sec.appendChild(el('div', { 'class': 'now-text' }, [
-        now.note ? el('h3', { 'class': 'now-title', text: now.note }) : null,
+        now.note ? el('h3', { 'class': 'now-title', text: now.note.split(/\n\s*\n/)[0] }) : null,
+        now.note && /\n\s*\n/.test(now.note) ? el('p', { 'class': 'now-more', text: now.note.split(/\n\s*\n/).slice(1).join('\n\n') }) : null,
         sourceBox(now),
         tagList(now)
       ]));

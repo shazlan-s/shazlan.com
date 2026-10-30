@@ -31,7 +31,6 @@
       "url": "https://www.instagram.com/p/BvS_JoJFlT3/",
       "date": "2019-03-22",
       "note": "Countdown to Japow 2026/2027 season starts now",
-      "now": true,
       "tags": [
         "japow",
         "snowboarding",
@@ -457,10 +456,15 @@
       "url": "https://www.instagram.com/p/DfF8LnKlJPK/",
       "source": "shared",
       "date": "2026-10-30",
-      "note": "RIP. Thank you Captain. You were an immense figure in my life 💔",
+      "note": "RIP. Thank you Captain. You were an immense figure in my life 💔\n\nComing back after spending the day reflecting on Patrick Stewart's passing. Watching all the tributes and the outpouring of love, I'm more emotional than I expected. I feel an enormous sense of loss, and I'm really sad.\n\nTNG was and still is such a big thing in my life. I used to watch and re-watch seasons over and over again. Especially from Season 4 onwards.",
       "via": "https://www.threads.com/@shazlan/post/DfGZOfHGdxZ",
-      "tags": [],
-      "auto": true
+      "tags": [
+        "tv",
+        "startrek",
+        "tng"
+      ],
+      "auto": true,
+      "now": true
     }
   ]
 }
