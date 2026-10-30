@@ -462,6 +462,17 @@
       ],
       "auto": true,
       "now": true
+    },
+    {
+      "kind": "post",
+      "source": "mine",
+      "platform": "threads",
+      "account": "shazlan",
+      "url": "https://www.threads.com/@shazlan/post/DfHvDE1GpsO",
+      "date": "2026-10-30",
+      "text": "This one hits hard",
+      "tags": [],
+      "auto": true
     }
   ]
 }
