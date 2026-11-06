@@ -53,7 +53,7 @@
     var box = el('div', { 'class': 'yt' });
     box.style.cssText = 'position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#111';
     box.appendChild(el('iframe', {
-      src: 'https://www.youtube-nocookie.com/embed/' + id,
+      src: 'https://www.youtube-nocookie.com/embed/' + id + (item.start ? '?start=' + item.start : ''),
       title: item.title || 'YouTube video', loading: 'lazy', allowfullscreen: '',
       allow: 'accelerometer; encrypted-media; gyroscope; picture-in-picture',
       style: 'position:absolute;inset:0;width:100%;height:100%;border:0'
@@ -210,7 +210,7 @@
     hit.addEventListener('click', function () {
       box.innerHTML = '';
       box.appendChild(el('iframe', {
-        src: 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1',
+        src: 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1' + (item.start ? '&start=' + item.start : ''),
         title: item.caption || 'YouTube video', allowfullscreen: '',
         allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen'
       }));

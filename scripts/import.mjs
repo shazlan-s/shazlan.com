@@ -146,7 +146,10 @@ async function linkedPiece(raw) {
   if (yt) {
     const url = `https://www.youtube.com/watch?v=${yt}`;
     const o = await json(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`);
-    return { kind: 'video', platform: 'youtube', account: o.author_name, url, caption: o.title };
+    // Keep a start time from the link (t=87, t=87s, t=1m27s or start=87) so the video opens there.
+    const t = (u.searchParams.get('t') || u.searchParams.get('start') || '').match(/^(?:(\d+)h)?(?:(\d+)m)?(\d+)?s?$/);
+    const start = t ? (+(t[1] || 0)) * 3600 + (+(t[2] || 0)) * 60 + (+(t[3] || 0)) : 0;
+    return Object.assign({ kind: 'video', platform: 'youtube', account: o.author_name, url, caption: o.title }, start ? { start } : {});
   }
   if (host === 'open.spotify.com' && /^\/(track|album|playlist|episode|show)\//.test(u.pathname)) {
     const url = `https://open.spotify.com${u.pathname}`;

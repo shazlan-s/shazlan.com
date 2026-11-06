@@ -478,7 +478,8 @@
         "startrek",
         "tng"
       ],
-      "auto": true
+      "auto": true,
+      "start": 87
     }
   ]
 }
