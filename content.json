@@ -464,14 +464,20 @@
       "now": true
     },
     {
-      "kind": "post",
-      "source": "mine",
-      "platform": "threads",
-      "account": "shazlan",
-      "url": "https://www.threads.com/@shazlan/post/DfHvDE1GpsO",
+      "kind": "video",
+      "source": "shared",
+      "platform": "youtube",
+      "account": "Tim M",
+      "url": "https://www.youtube.com/watch?v=c4y_oWBiwAo",
       "date": "2026-10-30",
-      "text": "This one hits hard",
-      "tags": [],
+      "caption": "Picards Flute Duet",
+      "note": "This one hits hard",
+      "via": "https://www.threads.com/@shazlan/post/DfHvDE1GpsO",
+      "tags": [
+        "tv",
+        "startrek",
+        "tng"
+      ],
       "auto": true
     }
   ]

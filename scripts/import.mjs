@@ -128,7 +128,8 @@ async function linkedPiece(raw) {
   let u;
   try {
     u = new URL(raw);
-    if (/(^|\.)facebook\.com$/.test(u.hostname) && u.searchParams.get('u')) u = new URL(u.searchParams.get('u'));
+    // Meta wraps outside links in a redirect (l.facebook.com, l.threads.com, l.instagram.com): unwrap it.
+    if (/(^|\.)(facebook|threads|instagram)\.(com|net)$/.test(u.hostname) && u.searchParams.get('u')) u = new URL(u.searchParams.get('u'));
   } catch { return null; }
   const host = u.hostname.replace(/^www\./, '');
   const page = async (url) => { try { const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }); return r.ok ? await r.text() : ''; } catch { return ''; } };
@@ -141,7 +142,7 @@ async function linkedPiece(raw) {
     const who = (html.match(/class="UsernameText"[^>]*>([^<]+)/) || [])[1];
     return { kind: type === 'reel' ? 'video' : 'photo', platform: 'instagram', account: who, url: `https://www.instagram.com/${type}/${m[2]}/` };
   }
-  const yt = (raw.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
+  const yt = (u.href.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
   if (yt) {
     const url = `https://www.youtube.com/watch?v=${yt}`;
     const o = await json(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`);
